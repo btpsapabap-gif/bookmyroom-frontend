@@ -1,5 +1,5 @@
 const API_BASE =
-  "http://localhost:3000/api";
+  "https://bookmyroom-api-aupi.onrender.com/api";
 
 async function loadPlanner() {
 

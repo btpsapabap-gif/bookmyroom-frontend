@@ -112,6 +112,103 @@ async function login() {
   if (!employee_id || !name) {
 
     loginMessage.textContent =
+      "Employee ID and Name are required";
+
+    return;
+  }
+
+  try {
+
+    loginMessage.textContent =
+      "Checking credentials...";
+
+    const response =
+      await fetch(
+        `${API_BASE}/users/login`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type":
+              "application/json"
+          },
+          body: JSON.stringify({
+            employee_id,
+            name
+          })
+        }
+      );
+
+    const result =
+      await response.json();
+
+    console.log(
+      "Login Result:",
+      result
+    );
+
+    if (!result.success) {
+
+      loginMessage.textContent =
+        result.message ||
+        "Login failed";
+
+      return;
+    }
+
+    currentUser =
+      result.user;
+
+    localStorage.setItem(
+      "bookmyroom_user",
+      JSON.stringify(
+        currentUser
+      )
+    );
+
+    loginMessage.textContent =
+      "Login successful";
+
+    loginSection.style.display =
+      "none";
+
+    appSection.style.display =
+      "block";
+
+    document.getElementById(
+      "employeeDisplay"
+    ).textContent =
+      `${currentUser.employee_id} - ${currentUser.name}`;
+
+    loadRooms();
+    loadBookings();
+
+  } catch (err) {
+
+    console.error(err);
+
+    loginMessage.textContent =
+      "Server connection failed";
+
+  }
+
+}
+
+loginBtn.addEventListener(
+  "click",
+  login
+);
+
+async function login() {
+
+  const employee_id =
+    employeeIdInput.value.trim();
+
+  const name =
+    employeeNameInput.value.trim();
+
+  if (!employee_id || !name) {
+
+    loginMessage.textContent =
       "Employee ID and Name required";
 
     return;
