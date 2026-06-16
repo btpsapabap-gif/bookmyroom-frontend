@@ -1,90 +1,90 @@
 const API_BASE =
-  "https://bookmyroom-api-aupi.onrender.com/api";
+    "https://bookmyroom-api-aupi.onrender.com/api";
 
 async function loadPlanner() {
 
-  const response =
-    await fetch(
-      `${API_BASE}/occupancy`
-    );
+    const response =
+        await fetch(
+            `${API_BASE}/occupancy`
+        );
 
-  const data =
-    await response.json();
+    const data =
+        await response.json();
 
-  const rooms =
-    data.rooms;
+    const rooms =
+        data.rooms;
 
-  const bookings =
-    data.bookings;
+    const bookings =
+        data.bookings;
 
-  const planner =
-    document.getElementById(
-      "planner"
-    );
+    const planner =
+        document.getElementById(
+            "planner"
+        );
 
-  planner.innerHTML = "";
+    planner.innerHTML = "";
 
-  const DAYS = 30;
+    const DAYS = 30;
 
-  let html =
-    `<table class="planner-table">`;
+    let html =
+        `<table class="planner-table">`;
 
-  html += "<thead><tr>";
+    html += "<thead><tr>";
 
-  html +=
-    "<th class='room-col'>Room</th>";
+    html +=
+        "<th class='room-col'>Room</th>";
 
-  for (
-    let d = 1;
-    d <= DAYS;
-    d++
-  ) {
-    html += `<th>${d}</th>`;
-  }
+    for (
+        let d = 1;
+        d <= DAYS;
+        d++
+    ) {
+        html += `<th>${d}</th>`;
+    }
 
-  html += "</tr></thead>";
+    html += "</tr></thead>";
 
-  html += "<tbody>";
+    html += "<tbody>";
 
-  rooms.forEach(room => {
+    rooms.forEach(room => {
 
-    html += "<tr>";
+        html += "<tr>";
 
-    html += `
+        html += `
       <td class='room-name'>
         ${room.room_no}
       </td>
     `;
 
-    for (
-      let d = 1;
-      d <= DAYS;
-      d++
-    ) {
+        for (
+            let d = 1;
+            d <= DAYS;
+            d++
+        ) {
 
-      const currentDate =
-        new Date();
+            const currentDate =
+                new Date();
 
-      currentDate.setDate(d);
+            currentDate.setDate(d);
 
-      const dateString =
-        currentDate
-          .toISOString()
-          .split("T")[0];
+            const dateString =
+                currentDate
+                    .toISOString()
+                    .split("T")[0];
 
-      let bookingFound =
-        bookings.find(
-          booking =>
-            booking.room_id === room.id &&
-            booking.from_date &&
-            booking.to_date &&
-            dateString >= booking.from_date &&
-            dateString <= booking.to_date
-        );
+            let bookingFound =
+                bookings.find(
+                    booking =>
+                        booking.room_id === room.id &&
+                        booking.from_date &&
+                        booking.to_date &&
+                        dateString >= booking.from_date &&
+                        dateString <= booking.to_date
+                );
 
-      if (bookingFound) {
+            if (bookingFound) {
 
-        html += `
+                html += `
           <td
             class="booked"
             title="
@@ -105,23 +105,27 @@ ${bookingFound.to_date}
           </td>
         `;
 
-      } else {
+            } else {
 
-        html += `
+                html += `
           <td class="free"></td>
         `;
-      }
+            }
 
-    }
+        }
 
-    html += "</tr>";
+        html += "</tr>";
 
-  });
+    });
 
-  html += "</tbody></table>";
+    html += "</tbody></table>";
 
-  planner.innerHTML =
-    html;
+    planner.innerHTML =
+        html;
+}
+
+function goBack() {
+    window.location.href = "admin.html";
 }
 
 loadPlanner();

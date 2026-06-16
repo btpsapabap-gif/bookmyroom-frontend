@@ -2,24 +2,31 @@
 <html>
 
 <head>
-  <meta charset="UTF-8">
-  <title>Occupancy Calendar</title>
-  <link rel="stylesheet" href="styles.css">
+    <meta charset="UTF-8">
+    <title>Occupancy Calendar</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 
 <body>
 
-<div class="hotel-calendar">
+    <div class="hotel-calendar">
 
-  <div class="calendar-title">
-    Rooms Occupancy Planner
-  </div>
+        <div class="top-bar">
+            <button onclick="goBack()" class="back-btn">
+                ← Back to Admin
+            </button>
+        </div>
 
-  <div id="planner"></div>
+        <div class="calendar-title">
+            Rooms Occupancy Planner
+        </div>
 
-</div>
+        <div id="planner"></div>
 
-<script src="calendar.js"></script>
+    </div>
+
+    <script src="calendar.js"></script>
 
 </body>
+
 </html>
