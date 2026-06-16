@@ -125,7 +125,7 @@ ${bookingFound.to_date}
 }
 
 function goBack() {
-    window.location.href = "admin.html";
+    window.location.href = "index.html";
 }
 
 loadPlanner();
