@@ -60,9 +60,8 @@ function openBookingModal(booking) {
       ${booking.status || ""}
     </div>
 
-    ${
-      booking.id_proof_image
-        ? `
+    ${booking.id_proof_image
+      ? `
         <a
           class="view-doc-btn"
           href="${booking.id_proof_image}"
@@ -71,7 +70,7 @@ function openBookingModal(booking) {
           View Uploaded ID
         </a>
       `
-        : ""
+      : ""
     }
 
   `;
@@ -141,8 +140,8 @@ async function loadDashboard() {
           </td>
           <td>
             ₹${Number(
-              booking.total_amount || 0
-            ).toLocaleString("en-IN")}
+          booking.total_amount || 0
+        ).toLocaleString("en-IN")}
           </td>
           <td>${booking.status || ""}</td>
         `;
@@ -216,8 +215,8 @@ async function searchBookings() {
             </td>
             <td>
               ₹${Number(
-                booking.total_amount || 0
-              ).toLocaleString("en-IN")}
+          booking.total_amount || 0
+        ).toLocaleString("en-IN")}
             </td>
             <td>${booking.status || ""}</td>
         `;
@@ -270,9 +269,13 @@ document
           "bookingModal"
         )
         .style.display =
-          "none";
+        "none";
 
     }
   );
+
+function goBack() {
+  window.location.href = "index.html";
+}
 
 loadDashboard();
