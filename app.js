@@ -400,37 +400,40 @@ function renderRooms() {
         return false;
       }
 
-      // Check booking overlap
-      const isBooked =
-        bookings.some(booking => {
+      if (
+        Number(booking.room_id) !==
+        Number(room.id)
+      ) {
+        return false;
+      }
 
-          if (
-            booking.room_id !== room.id ||
-            booking.status !== "CONFIRMED"
-          ) {
-            return false;
-          }
+      if (
+        booking.status !==
+        "CONFIRMED"
+      ) {
+        return false;
+      }
 
-          const bookedFrom =
-            new Date(
-              booking.from_date
-            );
+      const bookedFrom =
+        new Date(
+          booking.from_date
+        );
 
-          const bookedTo =
-            new Date(
-              booking.to_date
-            );
+      const bookedTo =
+        new Date(
+          booking.to_date
+        );
 
-          return (
-            fromDate < bookedTo &&
-            toDate > bookedFrom
-          );
-
-        });
-
-      return !isBooked;
+      return (
+        selectedFrom < bookedTo &&
+        selectedTo > bookedFrom
+      );
 
     });
+
+  if (isBooked) {
+    return false;
+  };
 
   roomsContainer.innerHTML = "";
 
@@ -479,29 +482,48 @@ function selectRoom(room) {
   calculateTotal();
 }
 
-fromDateInput.addEventListener("change", () => {
-  const fromDate = new Date(fromDateInput.value);
+fromDateInput.addEventListener("change", async () => {
 
-  const nextDay = new Date(fromDate);
-  nextDay.setDate(nextDay.getDate() + 1);
+  const fromDate =
+    new Date(fromDateInput.value);
 
-  toDateInput.min = formatDate(nextDay);
+  const nextDay =
+    new Date(fromDate);
 
-  if (new Date(toDateInput.value) <= fromDate) {
-    toDateInput.value = formatDate(nextDay);
+  nextDay.setDate(
+    nextDay.getDate() + 1
+  );
+
+  toDateInput.min =
+    formatDate(nextDay);
+
+  if (
+    new Date(toDateInput.value)
+    <= fromDate
+  ) {
+
+    toDateInput.value =
+      formatDate(nextDay);
+
   }
+
+  calculateTotal();
+
+  await loadBookings();
+
+  renderRooms();
+
 });
 
-fromDateInput.addEventListener(
-  "change",
-  calculateTotal,
+toDateInput.addEventListener("change", async () => {
 
-);
+  calculateTotal();
 
-toDateInput.addEventListener(
-  "change",
-  calculateTotal
-);
+  await loadBookings();
+
+  renderRooms();
+
+});
 
 function calculateTotal() {
 
