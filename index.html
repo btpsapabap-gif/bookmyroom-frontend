@@ -22,7 +22,7 @@
 
       <h1>BookMyRoom</h1>
 
-      <p>Workspace Booking System</p>
+      <p>Rooms Booking System</p>
 
       <div class="form-group">
         <label>Employee ID</label>
@@ -67,23 +67,25 @@
 
       <nav>
 
-        <button class="nav-btn active">
-          Rooms
-        </button>
+        <div class="sidebar">
 
-        <button class="nav-btn">
-          My Bookings
-        </button>
-        <p>
-        <a href="admin.html">
-          Admin Dashboard
-        </a>
-        </p>
+          <a href="#rooms">Rooms</a>
 
-        <a href="calendar.html">
-          Occupancy Calendar
-        </a>
+          <a href="#bookings">My Bookings</a>
 
+          <a id="adminMenu" href="admin.html">
+            Admin Dashboard
+          </a>
+
+          <a id="occupancyMenu" href="occupancy.html">
+            Occupancy Calendar
+          </a>
+
+          <a id="createUserMenu" href="users.html">
+            Create Users
+          </a>
+
+        </div>
       </nav>
 
       <div class="user-info">

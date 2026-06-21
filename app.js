@@ -96,10 +96,7 @@ window.addEventListener("load", async () => {
    LOGIN
 =========================== */
 
-loginBtn.addEventListener(
-  "click",
-  login
-);
+loginBtn.addEventListener("click", login);
 
 async function login() {
 
@@ -160,27 +157,49 @@ async function login() {
 
     localStorage.setItem(
       "bookmyroom_user",
-      JSON.stringify(
-        currentUser
-      )
+      JSON.stringify(currentUser)
     );
 
     loginMessage.textContent =
       "Login successful";
 
-    loginSection.style.display =
-      "none";
+    showApp();
 
-    appSection.style.display =
-      "block";
+    // Role Based Access
+    const adminMenu =
+      document.getElementById(
+        "adminMenu"
+      );
 
-    document.getElementById(
-      "employeeDisplay"
-    ).textContent =
-      `${currentUser.employee_id} - ${currentUser.name}`;
+    const occupancyMenu =
+      document.getElementById(
+        "occupancyMenu"
+      );
 
-    loadRooms();
-    loadBookings();
+    const createUserMenu =
+      document.getElementById(
+        "createUserMenu"
+      );
+
+    if (
+      currentUser.role !== "ADMIN"
+    ) {
+
+      if (adminMenu)
+        adminMenu.style.display =
+          "none";
+
+      if (occupancyMenu)
+        occupancyMenu.style.display =
+          "none";
+
+      if (createUserMenu)
+        createUserMenu.style.display =
+          "none";
+    }
+
+    await loadRooms();
+    await loadBookings();
 
   } catch (err) {
 
@@ -189,80 +208,6 @@ async function login() {
     loginMessage.textContent =
       "Server connection failed";
 
-  }
-
-}
-
-loginBtn.addEventListener(
-  "click",
-  login
-);
-
-async function login() {
-
-  const employee_id =
-    employeeIdInput.value.trim();
-
-  const name =
-    employeeNameInput.value.trim();
-
-  if (!employee_id || !name) {
-
-    loginMessage.textContent =
-      "Employee ID and Name required";
-
-    return;
-  }
-
-  try {
-
-    const response =
-      await fetch(
-        `${API_BASE}/users/login`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type":
-              "application/json"
-          },
-          body: JSON.stringify({
-            employee_id,
-            name
-          })
-        }
-      );
-
-    const result =
-      await response.json();
-
-    if (!result.success) {
-
-      loginMessage.textContent =
-        "Login failed";
-
-      return;
-    }
-
-    currentUser =
-      result.user;
-
-    localStorage.setItem(
-      "bookmyroom_user",
-      JSON.stringify(currentUser)
-    );
-
-    showApp();
-
-    await loadRooms();
-
-    await loadBookings();
-
-  } catch (err) {
-
-    console.error(err);
-
-    loginMessage.textContent =
-      "Server not reachable";
   }
 }
 
@@ -278,19 +223,18 @@ function showApp() {
 
   loggedUser.textContent =
     `${currentUser.employee_id} - ${currentUser.name}`;
-}
 
-logoutBtn.addEventListener(
-  "click",
-  () => {
-
-    localStorage.removeItem(
-      "bookmyroom_user"
+  const roleDisplay =
+    document.getElementById(
+      "roleDisplay"
     );
 
-    location.reload();
+  if (roleDisplay) {
+
+    roleDisplay.textContent =
+      currentUser.role || "USER";
   }
-);
+}
 
 /* ===========================
    ROOM TYPE
@@ -452,11 +396,26 @@ function renderRooms() {
   const type =
     roomTypeSelect.value;
 
-  const filtered =
-    rooms.filter(
-      r =>
-        r.room_type === type
+  const fromDate = new Date(fromDateInput.value);
+  const toDate = new Date(toDateInput.value);
+
+  const filtered = rooms.filter(room => {
+
+    if (room.room_type !== type) {
+      return false;
+    }
+
+    const booked = bookings.some(b =>
+      b.room_id === room.id &&
+      b.status === "CONFIRMED" &&
+      (
+        fromDate < new Date(b.to_date) &&
+        toDate > new Date(b.from_date)
+      )
     );
+
+    return !booked;
+  });
 
   roomCount.textContent =
     `${filtered.length} Room(s)`;
@@ -646,6 +605,24 @@ async function createBooking() {
 
   if (!selectedRoom) {
     alert("Select room first");
+    return;
+  }
+
+  await loadBookings();
+
+  const existingBooking = bookings.find(b =>
+    Number(b.room_id) === Number(selectedRoom.id) &&
+    b.status === "CONFIRMED" &&
+    (
+      new Date(fromDateInput.value) < new Date(b.to_date) &&
+      new Date(toDateInput.value) > new Date(b.from_date)
+    )
+  );
+
+  if (existingBooking) {
+    alert(
+      `Room ${selectedRoom.room_no} is already booked for the selected dates`
+    );
     return;
   }
 
