@@ -925,3 +925,30 @@ async function cancelBooking(id) {
     );
   }
 }
+
+logoutBtn.addEventListener(
+  "click",
+  logout
+);
+
+function logout() {
+
+  localStorage.removeItem(
+    "bookmyroom_user"
+  );
+
+  currentUser = null;
+
+  loginSection.classList.remove(
+    "hidden"
+  );
+
+  appContainer.classList.add(
+    "hidden"
+  );
+
+  employeeIdInput.value = "";
+  employeeNameInput.value = "";
+
+  location.href = "index.html";
+}
