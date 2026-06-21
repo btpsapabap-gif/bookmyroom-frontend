@@ -18,6 +18,7 @@ async function loadCalendar() {
   ).innerHTML = `
     <table class="planner-table">
       <tr>
+        <th>Booked by</th>
         <th>Room</th>
         <th>From</th>
         <th>To</th>
@@ -26,6 +27,7 @@ async function loadCalendar() {
 
       ${bookings.map(b => `
         <tr>
+          <td>${b.employee_id}</td>
           <td>${b.room_no}</td>
           <td>${b.from_date}</td>
           <td>${b.to_date}</td>
