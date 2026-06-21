@@ -605,3 +605,189 @@ td {
 .back-btn:hover {
   opacity: 0.9;
 }
+
+/* ==========================
+   GLOBAL
+========================== */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Segoe UI", sans-serif;
+}
+
+body {
+  background: #f5f7fb;
+  color: #333;
+  min-height: 100vh;
+}
+
+/* ==========================
+   HEADER
+========================== */
+
+.header {
+  background: #1e3a8a;
+  color: white;
+  padding: 16px 24px;
+  font-size: 24px;
+  font-weight: 600;
+}
+
+/* ==========================
+   CONTAINER
+========================== */
+
+.container {
+  max-width: 600px;
+  margin: 40px auto;
+  padding: 24px;
+}
+
+/* ==========================
+   CARD
+========================== */
+
+.card {
+  background: white;
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow:
+    0 4px 12px rgba(0,0,0,0.08);
+}
+
+.card h2 {
+  margin-bottom: 24px;
+  color: #1e3a8a;
+}
+
+/* ==========================
+   FORM
+========================== */
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+input,
+select {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #d9d9d9;
+  border-radius: 8px;
+  font-size: 15px;
+}
+
+input:focus,
+select:focus {
+  outline: none;
+  border-color: #2563eb;
+}
+
+/* ==========================
+   BUTTONS
+========================== */
+
+.btn {
+  width: 100%;
+  background: #2563eb;
+  color: white;
+  border: none;
+  padding: 14px;
+  border-radius: 10px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.btn:hover {
+  background: #1d4ed8;
+}
+
+.btn-back {
+  margin-top: 15px;
+  width: 100%;
+  background: #64748b;
+  color: white;
+  border: none;
+  padding: 14px;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.btn-back:hover {
+  background: #475569;
+}
+
+/* ==========================
+   SUCCESS MESSAGE
+========================== */
+
+.success {
+  margin-top: 20px;
+  background: #dcfce7;
+  color: #166534;
+  padding: 12px;
+  border-radius: 8px;
+  text-align: center;
+}
+
+.error {
+  margin-top: 20px;
+  background: #fee2e2;
+  color: #991b1b;
+  padding: 12px;
+  border-radius: 8px;
+  text-align: center;
+}
+
+/* ==========================
+   TABLE
+========================== */
+
+.user-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 25px;
+}
+
+.user-table th {
+  background: #1e3a8a;
+  color: white;
+  padding: 12px;
+}
+
+.user-table td {
+  padding: 12px;
+  border-bottom: 1px solid #eee;
+}
+
+.user-table tr:hover {
+  background: #f8fafc;
+}
+
+/* ==========================
+   MOBILE
+========================== */
+
+@media (max-width: 768px) {
+
+  .container {
+    padding: 15px;
+  }
+
+  .card {
+    padding: 20px;
+  }
+
+  .header {
+    font-size: 20px;
+  }
+}
