@@ -327,27 +327,6 @@ toDateInput.addEventListener("change", () => {
   calculateTotal();
 });
 
-function validateDates() {
-
-  const today = new Date();
-  today.setHours(0, 0, 0, 0);
-
-  const fromDate = new Date(fromDateInput.value);
-  const toDate = new Date(toDateInput.value);
-
-  if (fromDate < today) {
-    alert("Past dates are not allowed");
-    return false;
-  }
-
-  if (toDate <= fromDate) {
-    alert("To Date must be after From Date");
-    return false;
-  }
-
-  return true;
-}
-
 /* ===========================
    LOAD ROOMS
 =========================== */
@@ -384,10 +363,10 @@ function renderRooms() {
   const roomType =
     roomTypeSelect.value;
 
-  const fromDate =
+  const selectedFrom =
     new Date(fromDateInput.value);
 
-  const toDate =
+  const selectedTo =
     new Date(toDateInput.value);
 
   const availableRooms =
@@ -400,42 +379,49 @@ function renderRooms() {
         return false;
       }
 
-      if (
-        Number(booking.room_id) !==
-        Number(room.id)
-      ) {
-        return false;
-      }
+      // Booking overlap check
+      const isBooked =
+        bookings.some(booking => {
 
-      if (
-        booking.status !==
-        "CONFIRMED"
-      ) {
-        return false;
-      }
+          if (
+            Number(booking.room_id) !==
+            Number(room.id)
+          ) {
+            return false;
+          }
 
-      const bookedFrom =
-        new Date(
-          booking.from_date
-        );
+          if (
+            booking.status !==
+            "CONFIRMED"
+          ) {
+            return false;
+          }
 
-      const bookedTo =
-        new Date(
-          booking.to_date
-        );
+          const bookedFrom =
+            new Date(
+              booking.from_date
+            );
 
-      return (
-        selectedFrom < bookedTo &&
-        selectedTo > bookedFrom
-      );
+          const bookedTo =
+            new Date(
+              booking.to_date
+            );
+
+          return (
+            selectedFrom < bookedTo &&
+            selectedTo > bookedFrom
+          );
+
+        });
+
+      return !isBooked;
 
     });
 
-  if (isBooked) {
-    return false;
-  };
-
   roomsContainer.innerHTML = "";
+
+  roomCount.textContent =
+    `${availableRooms.length} Room(s)`;
 
   if (
     availableRooms.length === 0
@@ -452,7 +438,36 @@ function renderRooms() {
 
   availableRooms.forEach(room => {
 
-    // existing room card code
+    const card =
+      document.createElement("div");
+
+    card.className =
+      "room-card";
+
+    card.innerHTML = `
+      <h3>Room ${room.room_no}</h3>
+
+      <p>${room.floor}</p>
+
+      <p>${room.room_type}</p>
+
+      <p>₹${room.rate}</p>
+
+      <p>Capacity ${room.capacity}</p>
+
+      <button class="book-btn">
+        Book Now
+      </button>
+    `;
+
+    card
+      .querySelector(".book-btn")
+      .addEventListener(
+        "click",
+        () => selectRoom(room)
+      );
+
+    roomsContainer.appendChild(card);
 
   });
 
@@ -771,6 +786,7 @@ async function loadBookings() {
       await response.json();
 
     renderBookings();
+    renderRooms();
 
   } catch (err) {
 
