@@ -213,27 +213,18 @@ async function login() {
 
 function showApp() {
 
-  loginSection.classList.add(
-    "hidden"
-  );
-
-  appContainer.classList.remove(
-    "hidden"
-  );
+  loginSection.classList.add("hidden");
+  appContainer.classList.remove("hidden");
 
   loggedUser.textContent =
     `${currentUser.employee_id} - ${currentUser.name}`;
 
-  const roleDisplay =
-    document.getElementById(
-      "roleDisplay"
-    );
-
-  if (roleDisplay) {
-
-    roleDisplay.textContent =
-      currentUser.role || "USER";
-  }
+  document.getElementById(
+    "profileCircle"
+  ).textContent =
+    currentUser.name
+      .charAt(0)
+      .toUpperCase();
 }
 
 /* ===========================
@@ -889,6 +880,39 @@ function renderBookings() {
           )
       );
     });
+}
+
+const profileCircle =
+  document.getElementById("profileCircle");
+
+const profilePopup =
+  document.getElementById("profilePopup");
+
+profileCircle.addEventListener(
+  "click",
+  () => {
+    profilePopup.classList.toggle(
+      "show"
+    );
+  }
+);
+
+function getInitials(name) {
+
+  return name
+    .trim()
+    .split(" ")
+    .map(word => word[0])
+    .join("")
+    .substring(0, 2)
+    .toUpperCase();
+}
+
+if (currentUser && currentUser.name) {
+
+  profileCircle.textContent =
+    getInitials(currentUser.name);
+
 }
 
 /* ===========================

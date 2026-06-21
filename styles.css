@@ -871,3 +871,69 @@ select:focus {
   margin-top: 5px;
 }
 }
+
+.top-header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:25px;
+}
+
+.header-title{
+  font-size:48px;
+  font-weight:700;
+}
+
+.profile-menu{
+  position:relative;
+}
+
+.profile-circle{
+  width:48px;
+  height:48px;
+  border-radius:50%;
+  background:#0f766e;
+  color:white;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-weight:700;
+  cursor:pointer;
+  font-size:18px;
+}
+
+.profile-popup{
+  display:none;
+  position:absolute;
+  right:0;
+  top:60px;
+  background:white;
+  min-width:250px;
+  border-radius:12px;
+  padding:15px;
+  box-shadow:0 10px 25px rgba(0,0,0,.15);
+  z-index:999;
+}
+
+.profile-popup.show{
+  display:block;
+}
+
+.profile-name{
+  font-weight:700;
+  margin-bottom:5px;
+}
+
+.profile-role{
+  color:#64748b;
+  margin-bottom:15px;
+}
+
+#logoutBtn{
+  width:100% !important;
+  background:#ef4444;
+  color:white;
+  border:none;
+  padding:12px;
+  border-radius:8px;
+}
