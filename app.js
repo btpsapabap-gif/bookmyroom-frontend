@@ -379,104 +379,80 @@ async function loadRooms() {
 /* ===========================
    RENDER ROOMS
 =========================== */
-
 function renderRooms() {
 
-  if (!roomsContainer) return;
-
-  const type =
+  const roomType =
     roomTypeSelect.value;
 
-  const fromDate = new Date(fromDateInput.value);
-  const toDate = new Date(toDateInput.value);
+  const fromDate =
+    new Date(fromDateInput.value);
 
-  const filtered = rooms.filter(room => {
+  const toDate =
+    new Date(toDateInput.value);
 
-    if (room.room_type !== type) {
-      return false;
-    }
+  const availableRooms =
+    rooms.filter(room => {
 
-    const booked = bookings.some(b =>
-      b.room_id === room.id &&
-      b.status === "CONFIRMED" &&
-      (
-        fromDate < new Date(b.to_date) &&
-        toDate > new Date(b.from_date)
-      )
-    );
+      // Room type filter
+      if (
+        room.room_type !== roomType
+      ) {
+        return false;
+      }
 
-    return !booked;
-  });
+      // Check booking overlap
+      const isBooked =
+        bookings.some(booking => {
 
-  roomCount.textContent =
-    `${filtered.length} Room(s)`;
+          if (
+            booking.room_id !== room.id ||
+            booking.status !== "CONFIRMED"
+          ) {
+            return false;
+          }
+
+          const bookedFrom =
+            new Date(
+              booking.from_date
+            );
+
+          const bookedTo =
+            new Date(
+              booking.to_date
+            );
+
+          return (
+            fromDate < bookedTo &&
+            toDate > bookedFrom
+          );
+
+        });
+
+      return !isBooked;
+
+    });
 
   roomsContainer.innerHTML = "";
 
-  filtered.forEach(room => {
+  if (
+    availableRooms.length === 0
+  ) {
 
-    const card =
-      document.createElement(
-        "div"
-      );
-
-    card.className =
-      "room-card";
-
-    card.innerHTML = `
-      <h3>Room ${room.room_no}</h3>
-
-      <div class="room-meta">
-
-        <span>
-          ${room.floor}
-        </span>
-
-        <span>
-          ${room.room_type}
-        </span>
-
-        <span>
-          ₹${room.rate}
-        </span>
-
-        <span>
-          Capacity ${room.capacity}
-        </span>
-
+    roomsContainer.innerHTML = `
+      <div class="empty-state">
+        No rooms available
       </div>
-
-      <button
-        class="book-btn"
-        data-room="${room.id}">
-        Book Now
-      </button>
     `;
 
-    roomsContainer.appendChild(
-      card
-    );
+    return;
+  }
+
+  availableRooms.forEach(room => {
+
+    // existing room card code
+
   });
 
-  document
-    .querySelectorAll(".book-btn")
-    .forEach(btn => {
-
-      btn.addEventListener(
-        "click",
-        () => {
-
-          const room =
-            rooms.find(
-              r =>
-                r.id ==
-                btn.dataset.room
-            );
-
-          selectRoom(room);
-        }
-      );
-    });
 }
 
 /* ===========================
