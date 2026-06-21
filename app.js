@@ -331,22 +331,17 @@ function setupDefaultDates() {
   const tomorrow =
     new Date();
 
-  tomorrow.setDate(
-    tomorrow.getDate() + 1
-  );
+  tomorrow.setDate(tomorrow.getDate() + 1);
+  ;
 
-  fromDateInput.value =
-    formatDate(today);
-
-  toDateInput.value =
-    formatDate(tomorrow);
+  // Prevent past dates
+  fromDateInput.min = formatDate(today);
+  toDateInput.min = formatDate(tomorrow);
 }
 
 function formatDate(date) {
 
-  return date
-    .toISOString()
-    .split("T")[0];
+  return date.toISOString().split("T")[0];
 }
 
 /* ===========================
@@ -489,9 +484,23 @@ function selectRoom(room) {
   calculateTotal();
 }
 
+fromDateInput.addEventListener("change", () => {
+  const fromDate = new Date(fromDateInput.value);
+
+  const nextDay = new Date(fromDate);
+  nextDay.setDate(nextDay.getDate() + 1);
+
+  toDateInput.min = formatDate(nextDay);
+
+  if (new Date(toDateInput.value) <= fromDate) {
+    toDateInput.value = formatDate(nextDay);
+  }
+});
+
 fromDateInput.addEventListener(
   "change",
-  calculateTotal
+  calculateTotal,
+
 );
 
 toDateInput.addEventListener(
@@ -529,6 +538,26 @@ function calculateTotal() {
   totalAmount.textContent =
     total.toLocaleString("en-IN");
 
+}
+
+function validateDates() {
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+
+  const fromDate = new Date(fromDateInput.value);
+  const toDate = new Date(toDateInput.value);
+
+  if (fromDate < today) {
+    alert("From Date cannot be in the past");
+    return false;
+  }
+
+  if (toDate <= fromDate) {
+    alert("To Date must be after From Date");
+    return false;
+  }
+
+  return true;
 }
 
 /* ===========================
