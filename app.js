@@ -325,14 +325,14 @@ function roomTypeChanged() {
 
 function setupDefaultDates() {
 
-  const today =
-    new Date();
+  const today = new Date();
 
-  const tomorrow =
-    new Date();
+  const tomorrow = new Date();
+  tomorrow.setDate(today.getDate() + 1);
 
-  tomorrow.setDate(tomorrow.getDate() + 1);
-  ;
+  // Default values
+  fromDateInput.value = formatDate(today);
+  toDateInput.value = formatDate(tomorrow);
 
   // Prevent past dates
   fromDateInput.min = formatDate(today);
@@ -340,8 +340,77 @@ function setupDefaultDates() {
 }
 
 function formatDate(date) {
-
   return date.toISOString().split("T")[0];
+}
+
+// When From Date changes
+fromDateInput.addEventListener("change", () => {
+
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+
+  const fromDate = new Date(fromDateInput.value);
+
+  // Block past date selection
+  if (fromDate < today) {
+    alert("Past dates are not allowed");
+    fromDateInput.value = formatDate(today);
+    return;
+  }
+
+  const nextDay = new Date(fromDate);
+  nextDay.setDate(nextDay.getDate() + 1);
+
+  toDateInput.min = formatDate(nextDay);
+
+  if (
+    !toDateInput.value ||
+    new Date(toDateInput.value) <= fromDate
+  ) {
+    toDateInput.value = formatDate(nextDay);
+  }
+
+  calculateTotal();
+});
+
+toDateInput.addEventListener("change", () => {
+
+  const fromDate = new Date(fromDateInput.value);
+  const toDate = new Date(toDateInput.value);
+
+  if (toDate <= fromDate) {
+
+    alert("To Date must be after From Date");
+
+    const nextDay = new Date(fromDate);
+    nextDay.setDate(nextDay.getDate() + 1);
+
+    toDateInput.value = formatDate(nextDay);
+    return;
+  }
+
+  calculateTotal();
+});
+
+function validateDates() {
+
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+
+  const fromDate = new Date(fromDateInput.value);
+  const toDate = new Date(toDateInput.value);
+
+  if (fromDate < today) {
+    alert("Past dates are not allowed");
+    return false;
+  }
+
+  if (toDate <= fromDate) {
+    alert("To Date must be after From Date");
+    return false;
+  }
+
+  return true;
 }
 
 /* ===========================
@@ -571,12 +640,12 @@ confirmBookingBtn.addEventListener(
 
 async function createBooking() {
 
+  if (!validateDates()) {
+    return;
+  }
+
   if (!selectedRoom) {
-
-    alert(
-      "Select room first"
-    );
-
+    alert("Select room first");
     return;
   }
 
