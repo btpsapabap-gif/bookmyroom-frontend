@@ -3,28 +3,54 @@ const router = express.Router();
 
 const supabase = require("../supabase");
 
-router.post("/login", async (req, res) => {
+router.post("/", async (req, res) => {
 
   try {
 
-    const { employee_id } = req.body;
+    const {
+      employee_id,
+      name,
+      role
+    } = req.body;
 
-    const { data, error } = await supabase
-      .from("users")
-      .select("*")
-      .eq("employee_id", employee_id)
-      .single();
+    const { data: existing } =
+      await supabase
+        .from("users")
+        .select("*")
+        .eq("employee_id", employee_id)
+        .single();
 
-    if (error || !data) {
-      return res.status(401).json({
+    if (existing) {
+
+      return res.status(400).json({
         success: false,
-        message: "Invalid Employee ID"
+        message: "Employee already exists"
       });
+
+    }
+
+    const { data, error } =
+      await supabase
+        .from("users")
+        .insert([{
+          employee_id,
+          name,
+          role
+        }])
+        .select();
+
+    if (error) {
+
+      return res.status(500).json({
+        success: false,
+        message: error.message
+      });
+
     }
 
     res.json({
       success: true,
-      user: data
+      user: data[0]
     });
 
   } catch (err) {
