@@ -4,192 +4,262 @@ const router = express.Router();
 const supabase = require("../supabase");
 
 /* ==========================
-   GET BOOKINGS
+GET BOOKINGS
 ========================== */
 
 router.get("/", async (req, res) => {
-  try {
 
-    const { data, error } = await supabase
-      .from("bookings")
-      .select("*")
-      .order("booking_date", {
-        ascending: false
-      });
+try {
 
-    if (error) {
-      return res.status(500).json({
-        success: false,
-        message: error.message
-      });
-    }
+```
+const { data, error } =
+  await supabase
+    .from("bookings")
+    .select("*")
+    .order(
+      "booking_date",
+      { ascending: false }
+    );
 
-    res.json(data);
+if (error) {
 
-  } catch (err) {
+  return res.status(500).json({
+    success: false,
+    message: error.message
+  });
 
-    res.status(500).json({
-      success: false,
-      message: err.message
-    });
+}
 
-  }
+res.json(data);
+```
+
+} catch (err) {
+
+```
+res.status(500).json({
+  success: false,
+  message: err.message
+});
+```
+
+}
+
 });
 
 /* ==========================
-   CREATE BOOKING
+CREATE BOOKING
 ========================== */
 
 router.post("/", async (req, res) => {
 
-  try {
+try {
 
-    const booking = req.body;
+```
+const booking = req.body;
 
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
+const today =
+  new Date();
 
-    const newFrom = new Date(booking.from_date);
-    const newTo = new Date(booking.to_date);
+today.setHours(
+  0, 0, 0, 0
+);
 
-    /* --------------------------
-       DATE VALIDATION
-    -------------------------- */
+const newFrom =
+  new Date(
+    booking.from_date
+  );
 
-    if (newFrom < today) {
-      return res.status(400).json({
-        success: false,
-        message: "Past dates are not allowed"
-      });
-    }
+const newTo =
+  new Date(
+    booking.to_date
+  );
 
-    if (newTo <= newFrom) {
-      return res.status(400).json({
-        success: false,
-        message: "To Date must be after From Date"
-      });
-    }
+/* --------------------------
+   DATE VALIDATION
+-------------------------- */
 
-    /* --------------------------
-       ROOM CONFLICT CHECK
-    -------------------------- */
+if (newFrom < today) {
 
-    const { data: existingBookings, error: checkError } =
-      await supabase
-        .from("bookings")
-        .select("*")
-        .eq("room_id", booking.room_id)
-        .eq("status", "CONFIRMED");
+  return res.status(400).json({
+    success: false,
+    message:
+      "Past dates are not allowed"
+  });
 
-    if (checkError) {
-      return res.status(500).json({
-        success: false,
-        message: checkError.message
-      });
-    }
+}
 
-    const conflict = existingBookings.some(existing => {
+if (newTo <= newFrom) {
+
+  return res.status(400).json({
+    success: false,
+    message:
+      "To Date must be after From Date"
+  });
+
+}
+
+/* --------------------------
+   DEFAULT VALUES
+-------------------------- */
+
+booking.booking_date =
+  new Date().toISOString();
+
+booking.status =
+  booking.status ||
+  "CONFIRMED";
+
+booking.user_type =
+  booking.user_type ||
+  "INTERNAL";
+
+/* --------------------------
+   ROOM CONFLICT CHECK
+-------------------------- */
+
+const {
+  data: existingBookings,
+  error: checkError
+} = await supabase
+  .from("bookings")
+  .select("*")
+  .eq(
+    "room_id",
+    booking.room_id
+  )
+  .eq(
+    "status",
+    "CONFIRMED"
+  );
+
+if (checkError) {
+
+  return res.status(500).json({
+    success: false,
+    message:
+      checkError.message
+  });
+
+}
+
+const conflict =
+  existingBookings.some(
+    existing => {
 
       const existingFrom =
-        new Date(existing.from_date);
+        new Date(
+          existing.from_date
+        );
 
       const existingTo =
-        new Date(existing.to_date);
+        new Date(
+          existing.to_date
+        );
 
-      // Overlap logic
       return (
         newFrom < existingTo &&
         newTo > existingFrom
       );
 
-    });
-
-    if (conflict) {
-
-      return res.status(400).json({
-        success: false,
-        message:
-          "Room already booked for selected dates"
-      });
-
     }
+  );
 
-    /* --------------------------
-       CREATE BOOKING
-    -------------------------- */
+if (conflict) {
 
-    booking.booking_date =
-      new Date().toISOString();
+  return res.status(400).json({
+    success: false,
+    message:
+      "Room already booked for selected dates"
+  });
 
-    booking.status =
-      booking.status || "CONFIRMED";
+}
 
-    const { data, error } =
-      await supabase
-        .from("bookings")
-        .insert([booking])
-        .select();
+/* --------------------------
+   CREATE BOOKING
+-------------------------- */
 
-    if (error) {
+const {
+  data,
+  error
+} = await supabase
+  .from("bookings")
+  .insert([booking])
+  .select();
 
-      return res.status(500).json({
-        success: false,
-        message: error.message
-      });
+if (error) {
 
-    }
+  return res.status(500).json({
+    success: false,
+    message:
+      error.message
+  });
 
-    return res.json({
-      success: true,
-      booking: data[0]
-    });
+}
 
-  } catch (err) {
+res.json({
+  success: true,
+  booking: data[0]
+});
+```
 
-    return res.status(500).json({
-      success: false,
-      message: err.message
-    });
+} catch (err) {
 
-  }
+```
+res.status(500).json({
+  success: false,
+  message:
+    err.message
+});
+```
+
+}
 
 });
 
 /* ==========================
-   DELETE BOOKING
+DELETE BOOKING
 ========================== */
 
 router.delete("/:id", async (req, res) => {
 
-  try {
+try {
 
-    const { error } =
-      await supabase
-        .from("bookings")
-        .delete()
-        .eq("id", req.params.id);
+```
+const { error } =
+  await supabase
+    .from("bookings")
+    .delete()
+    .eq(
+      "id",
+      req.params.id
+    );
 
-    if (error) {
+if (error) {
 
-      return res.status(500).json({
-        success: false,
-        message: error.message
-      });
+  return res.status(500).json({
+    success: false,
+    message:
+      error.message
+  });
 
-    }
+}
 
-    res.json({
-      success: true
-    });
+res.json({
+  success: true
+});
+```
 
-  } catch (err) {
+} catch (err) {
 
-    res.status(500).json({
-      success: false,
-      message: err.message
-    });
+```
+res.status(500).json({
+  success: false,
+  message:
+    err.message
+});
+```
 
-  }
+}
 
 });
 

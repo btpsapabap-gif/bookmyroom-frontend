@@ -63,7 +63,7 @@ app.use(
 console.log("Before Guests Route");
 const guestRoutes =
   require("./routes/guests");
-console.log("Before Guests Route");
+console.log("After Guests Route");
 app.use(
     "/api/guests",
      guestRoutes
