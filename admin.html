@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Dashboard</title>
+
     <link rel="stylesheet" href="styles.css">
 </head>
 
@@ -16,8 +17,20 @@
                 ← Back to Booking
             </button>
         </div>
-        
+
         <h1>Admin Dashboard</h1>
+
+        <div class="admin-actions">
+
+            <button onclick="location.href='users.html'">
+                Create User
+            </button>
+
+            <button onclick="location.href='calendar.html'">
+                Occupancy Calendar
+            </button>
+
+        </div>
 
         <div class="stats">
 
@@ -37,6 +50,16 @@
             </div>
 
             <div class="stat-card">
+                <h2 id="internalBookings">0</h2>
+                <p>Internal Bookings</p>
+            </div>
+
+            <div class="stat-card">
+                <h2 id="externalBookings">0</h2>
+                <p>External Bookings</p>
+            </div>
+
+            <div class="stat-card">
                 <h2 id="revenue">₹0</h2>
                 <p>Revenue</p>
             </div>
@@ -53,6 +76,10 @@
                 Search
             </button>
 
+            <button id="exportBtn">
+                Export CSV
+            </button>
+
         </div>
 
         <table id="bookingsTable">
@@ -60,11 +87,15 @@
             <thead>
 
                 <tr>
-                    <th>Employee</th>
+                    <th>User Type</th>
+                    <th>Employee / Guest</th>
+                    <th>Mobile</th>
                     <th>Room</th>
-                    <th>Dates</th>
+                    <th>From</th>
+                    <th>To</th>
                     <th>Amount</th>
                     <th>Status</th>
+                    <th>Action</th>
                 </tr>
 
             </thead>

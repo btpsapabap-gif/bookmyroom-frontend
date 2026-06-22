@@ -3,6 +3,26 @@ const API_BASE =
 
 function openBookingModal(booking) {
 
+  const currentUser =
+    JSON.parse(
+      localStorage.getItem(
+        "bookmyroom_user"
+      )
+    );
+
+  if (
+    !currentUser ||
+    currentUser.role !== "ADMIN"
+  ) {
+
+    alert(
+      "Access Denied"
+    );
+
+    location.href =
+      "index.html";
+  }
+
   const details =
     document.getElementById(
       "bookingDetails"

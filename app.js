@@ -679,7 +679,7 @@ async function createBooking() {
     const payload = {
 
       employee_id:
-        currentUser.employee_id,
+        currentUser.employee_id || null,
 
       room_id:
         selectedRoom.id,
@@ -721,6 +721,21 @@ async function createBooking() {
 
       id_proof_image:
         imageUrl,
+
+      /* NEW */
+
+      user_type:
+        currentUser.user_type ||
+        "INTERNAL",
+
+      guest_name:
+        currentUser.name || null,
+
+      guest_mobile:
+        currentUser.mobile || null,
+
+      guest_email:
+        currentUser.email || null,
 
       status:
         "CONFIRMED"

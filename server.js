@@ -69,6 +69,16 @@ app.use(
     usersRouter
 );
 
+const externalRoutes =
+  require(
+    "./routes/external"
+  );
+
+  app.use(
+  "/api/external",
+  externalRoutes
+);
+
 app.get(
     "/api/health",
     (req, res) => {
