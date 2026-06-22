@@ -1,465 +1,146 @@
-const API_BASE =
-  "https://bookmyroom-api-aupi.onrender.com/api";
-
-const currentUser =
-  JSON.parse(
-    localStorage.getItem(
-      "bookmyroom_user"
-    )
-  );
-
-let lastBookings = [];
-
-if (
-  !currentUser ||
-  currentUser.role !== "ADMIN"
-) {
-
-  alert(
-    "Access Denied"
-  );
-
-  location.href =
-    "index.html";
-}
-
-function openBookingModal(booking) {
-
-  const details =
-    document.getElementById(
-      "bookingDetails"
-    );
-
-  details.innerHTML = `
-
-    <div class="detail-row">
-  <span class="detail-label">
-    User Type:
-  </span>
-  ${booking.user_type || "INTERNAL"}
-</div>
-
-<div class="detail-row">
-  <span class="detail-label">
-    User:
-  </span>
-  ${booking.user_type === "EXTERNAL"
-      ? booking.guest_name
-      : booking.employee_id
-    }
-</div>
-
-    <div class="detail-row">
-      <span class="detail-label">Room:</span>
-      ${booking.room_no || ""}
-    </div>
-
-    <div class="detail-row">
-      <span class="detail-label">Room Type:</span>
-      ${booking.room_type || ""}
-    </div>
-
-    <div class="detail-row">
-      <span class="detail-label">From:</span>
-      ${booking.from_date || ""}
-    </div>
-
-    <div class="detail-row">
-      <span class="detail-label">To:</span>
-      ${booking.to_date || ""}
-    </div>
-
-    <div class="detail-row">
-      <span class="detail-label">Mobile:</span>
-      ${booking.mobile || ""}
-    </div>
-
-    <div class="detail-row">
-      <span class="detail-label">ID Proof:</span>
-      ${booking.id_proof || ""}
-    </div>
-
-    <div class="detail-row">
-      <span class="detail-label">ID Number:</span>
-      ${booking.id_proof_no || ""}
-    </div>
-
-    <div class="detail-row">
-      <span class="detail-label">Amount:</span>
-      ₹${booking.total_amount || 0}
-    </div>
-
-    <div class="detail-row">
-      <span class="detail-label">Status:</span>
-      ${booking.status || ""}
-    </div>
-
-    ${booking.id_proof_image
-      ? `
-        <a
-          class="view-doc-btn"
-          href="${booking.id_proof_image}"
-          target="_blank"
-        >
-          View Uploaded ID
-        </a>
-      `
-      : ""
-    }
-
-  `;
-
-  document.getElementById(
-    "bookingModal"
-  ).style.display = "block";
-}
-
-async function loadDashboard() {
-
-  try {
-
-    const response =
-      await fetch(
-        `${API_BASE}/admin/dashboard`
-      );
-
-    const data =
-      await response.json();
-
-    lastBookings =
-      data.bookings || [];
-
-    document.getElementById(
-      "internalBookings"
-    ).textContent =
-      data.bookings.filter(
-        b =>
-          b.user_type !==
-          "EXTERNAL"
-      ).length;
-
-    document.getElementById(
-      "externalBookings"
-    ).textContent =
-      data.bookings.filter(
-        b =>
-          b.user_type ===
-          "EXTERNAL"
-      ).length;
-
-    document.getElementById(
-      "totalRooms"
-    ).textContent =
-      data.totalRooms || 0;
-
-    document.getElementById(
-      "availableRooms"
-    ).textContent =
-      data.availableRooms || 0;
-
-    document.getElementById(
-      "bookedRooms"
-    ).textContent =
-      data.bookedRooms || 0;
-
-    document.getElementById(
-      "revenue"
-    ).textContent =
-      "₹" +
-      Number(
-        data.revenue || 0
-      ).toLocaleString("en-IN");
-
-    const tbody =
-      document.querySelector(
-        "#bookingsTable tbody"
-      );
-
-    tbody.innerHTML = "";
-
-    data.bookings.forEach(
-      booking => {
-
-        const row =
-          document.createElement(
-            "tr"
-          );
-
-        row.innerHTML = `
-  <td>
-    ${booking.user_type || "INTERNAL"}
-  </td>
-
-  <td>
-    ${booking.user_type === "EXTERNAL"
-            ? booking.guest_name
-            : booking.employee_id
-          }
-  </td>
-
-  <td>
-    ${booking.guest_mobile ||
-          booking.mobile ||
-          "-"
-          }
-  </td>
-
-  <td>
-    ${booking.room_no || ""}
-  </td>
-
-  <td>
-    ${booking.from_date || ""}
-  </td>
-
-  <td>
-    ${booking.to_date || ""}
-  </td>
-
-  <td>
-    ₹${Number(
-            booking.total_amount || 0
-          ).toLocaleString("en-IN")}
-  </td>
-
-  <td>
-    ${booking.status || ""}
-  </td>
-
-  <td>
-    <button
-      onclick="cancelBooking('${booking.id}')">
-      Cancel
-    </button>
-  </td>
-`;
-
-        row.style.cursor =
-          "pointer";
-
-        row.addEventListener(
-          "click",
-          () =>
-            openBookingModal(
-              booking
-            )
-        );
-
-        tbody.appendChild(row);
-
-      }
-    );
-
-  } catch (err) {
-
-    console.error(err);
-
-    alert(
-      "Failed to load dashboard"
-    );
-
-  }
-}
-
-async function searchBookings() {
-
-  try {
-
-    const q =
-      document.getElementById(
-        "searchInput"
-      ).value;
-
-    const response =
-      await fetch(
-        `${API_BASE}/admin/search?q=${q}`
-      );
-
-    const bookings =
-      await response.json();
-
-    lastBookings =
-      bookings || [];
-
-    const tbody =
-      document.querySelector(
-        "#bookingsTable tbody"
-      );
-
-    tbody.innerHTML = "";
-
-    bookings.forEach(
-      booking => {
-
-        const row =
-          document.createElement(
-            "tr"
-          );
-
-        row.innerHTML = `
-            <td>${booking.employee_id || ""}</td>
-            <td>${booking.room_no || ""}</td>
-            <td>
-              ${booking.from_date || ""}
-              <br>
-              ${booking.to_date || ""}
-            </td>
-            <td>
-              ₹${Number(
-          booking.total_amount || 0
-        ).toLocaleString("en-IN")}
-            </td>
-            <td>${booking.status || ""}</td>
-        `;
-
-        row.style.cursor =
-          "pointer";
-
-        row.addEventListener(
-          "click",
-          () =>
-            openBookingModal(
-              booking
-            )
-        );
-
-        tbody.appendChild(row);
-
-      }
-    );
-
-  } catch (err) {
-
-    console.error(
-      "Search Error",
-      err
-    );
-
-  }
-}
-
-document
-  .getElementById(
-    "searchBtn"
-  )
-  .addEventListener(
-    "click",
-    searchBookings
-  );
-
-document
-  .getElementById(
-    "closeModal"
-  )
-  .addEventListener(
-    "click",
-    () => {
-
-      document
-        .getElementById(
-          "bookingModal"
-        )
-        .style.display =
-        "none";
+const express = require("express");
+const router = express.Router();
+
+const supabase = require("../supabase");
+
+router.get("/dashboard", async (req, res) => {
+    try {
+
+        const { data: rooms, error: roomsError } =
+            await supabase
+                .from("rooms")
+                .select("*");
+
+        if (roomsError) throw roomsError;
+
+        const { data: bookings, error: bookingsError } =
+            await supabase
+                .from("bookings")
+                .select("*")
+                .order("id", { ascending: false });
+
+        if (bookingsError) throw bookingsError;
+
+        const totalRooms = rooms.length;
+
+        const confirmedBookings =
+            bookings.filter(
+                b => b.status === "CONFIRMED"
+            );
+
+        const bookedRoomIds =
+            new Set(
+                confirmedBookings.map(
+                    b => b.room_id
+                )
+            );
+
+        const bookedRooms =
+            bookedRoomIds.size;
+
+        const availableRooms =
+            Math.max(
+                totalRooms - bookedRooms,
+                0
+            );
+
+        const revenue =
+            bookings.reduce(
+                (sum, booking) =>
+                    sum +
+                    Number(
+                        booking.total_amount || 0
+                    ),
+                0
+            );
+
+        res.json({
+            success: true,
+            totalRooms,
+            bookedRooms,
+            availableRooms,
+            revenue,
+            totalBookings:
+                bookings.length,
+            bookings
+        });
+
+    } catch (err) {
+
+        console.error(err);
+
+        res.status(500).json({
+            success: false,
+            message: err.message
+        });
 
     }
-  );
+});
 
-async function cancelBooking(id) {
+router.get("/search", async (req, res) => {
 
-  if (
-    !confirm(
-      "Cancel this booking?"
-    )
-  ) {
-    return;
-  }
+    try {
 
-  try {
+        const search =
+            req.query.q || "";
 
-    await fetch(
-      `${API_BASE}/bookings/${id}`,
-      {
-        method: "DELETE"
-      }
-    );
+        const { data, error } =
+            await supabase
+                .from("bookings")
+                .select("*");
 
-    alert(
-      "Booking cancelled"
-    );
+        if (error) throw error;
 
-    loadDashboard();
+        const results =
+            data.filter(b => {
 
-  } catch (err) {
+                return (
+                    String(b.employee_id || "")
+                        .toLowerCase()
+                        .includes(search.toLowerCase())
 
-    console.error(err);
+                    ||
 
-    alert(
-      "Unable to cancel booking"
-    );
+                    String(b.room_no || "")
+                        .toLowerCase()
+                        .includes(search.toLowerCase())
 
-  }
+                    ||
 
-}
+                    String(b.mobile || "")
+                        .includes(search)
 
-function exportToCSV() {
+                    ||
 
-  if (!lastBookings.length) {
-    alert("No bookings to export");
-    return;
-  }
+                    String(b.status || "")
+                        .toLowerCase()
+                        .includes(search.toLowerCase())
 
-  const headers = [
-    "User Type",
-    "Employee / Guest",
-    "Mobile",
-    "Room",
-    "From",
-    "To",
-    "Amount",
-    "Status"
-  ];
+                    ||
 
-  const rows = lastBookings.map(b => [
-    b.user_type || "INTERNAL",
-    b.user_type === "EXTERNAL"
-      ? (b.guest_name || "")
-      : (b.employee_id || ""),
-    b.guest_mobile || b.mobile || "",
-    b.room_no || "",
-    b.from_date || "",
-    b.to_date || "",
-    b.total_amount || 0,
-    b.status || ""
-  ]);
+                    String(b.from_date || "")
+                        .includes(search)
 
-  const csvContent = [headers, ...rows]
-    .map(row =>
-      row
-        .map(cell => `"${String(cell).replace(/"/g, '""')}"`)
-        .join(",")
-    )
-    .join("\n");
+                    ||
 
-  const blob = new Blob(
-    [csvContent],
-    { type: "text/csv;charset=utf-8;" }
-  );
+                    String(b.to_date || "")
+                        .includes(search)
 
-  const link = document.createElement("a");
-  link.href = URL.createObjectURL(blob);
-  link.download = `bookings-${new Date().toISOString().split("T")[0]}.csv`;
-  document.body.appendChild(link);
-  link.click();
-  document.body.removeChild(link);
-}
+                );
 
-document
-  .getElementById("exportBtn")
-  .addEventListener("click", exportToCSV);
+            });
 
-function goBack() {
-  window.location.href = "index.html";
-}
+        res.json(results);
 
-loadDashboard();
+    } catch (err) {
+
+        res.status(500).json({
+            success: false,
+            message: err.message
+        });
+
+    }
+
+});
+
+module.exports = router;

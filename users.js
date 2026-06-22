@@ -64,4 +64,55 @@ router.post("/", async (req, res) => {
 
 });
 
+router.post("/login", async (req, res) => {
+
+  try {
+
+    const {
+      employee_id,
+      name
+    } = req.body;
+
+    if (!employee_id || !name) {
+
+      return res.status(400).json({
+        success: false,
+        message: "Employee ID and Name are required"
+      });
+
+    }
+
+    const { data: user, error } =
+      await supabase
+        .from("users")
+        .select("*")
+        .eq("employee_id", employee_id)
+        .ilike("name", name)
+        .single();
+
+    if (error || !user) {
+
+      return res.status(401).json({
+        success: false,
+        message: "Invalid Employee ID or Name"
+      });
+
+    }
+
+    res.json({
+      success: true,
+      user
+    });
+
+  } catch (err) {
+
+    res.status(500).json({
+      success: false,
+      message: err.message
+    });
+
+  }
+
+});
+
 module.exports = router;
