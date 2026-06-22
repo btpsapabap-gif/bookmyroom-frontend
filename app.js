@@ -66,6 +66,15 @@ const confirmBookingBtn =
 const bookingsContainer =
   document.getElementById("bookingsContainer");
 
+const adminMenu =
+  document.getElementById("adminMenu");
+
+const occupancyMenu =
+  document.getElementById("occupancyMenu");
+
+const createUserMenu =
+  document.getElementById("createUserMenu");
+
 /* ===========================
 Newly added
 =========================== */
@@ -270,21 +279,6 @@ async function login() {
     showApp();
 
     // Role Based Access
-    const adminMenu =
-      document.getElementById(
-        "adminMenu"
-      );
-
-    const occupancyMenu =
-      document.getElementById(
-        "occupancyMenu"
-      );
-
-    const createUserMenu =
-      document.getElementById(
-        "createUserMenu"
-      );
-
     if (
       currentUser.role !== "ADMIN"
     ) {
@@ -397,7 +391,7 @@ function formatDate(date) {
 }
 
 // When From Date changes
-fromDateInput.addEventListener("change", () => {
+fromDateInput.addEventListener("change", async () => {
 
   const today = new Date();
   today.setHours(0, 0, 0, 0);
@@ -424,9 +418,13 @@ fromDateInput.addEventListener("change", () => {
   }
 
   calculateTotal();
+
+  await loadBookings();
+
+  renderRooms();
 });
 
-toDateInput.addEventListener("change", () => {
+toDateInput.addEventListener("change", async () => {
 
   const fromDate = new Date(fromDateInput.value);
   const toDate = new Date(toDateInput.value);
@@ -443,6 +441,10 @@ toDateInput.addEventListener("change", () => {
   }
 
   calculateTotal();
+
+  await loadBookings();
+
+  renderRooms();
 });
 
 /* ===========================
@@ -614,49 +616,6 @@ function selectRoom(room) {
 
   calculateTotal();
 }
-
-fromDateInput.addEventListener("change", async () => {
-
-  const fromDate =
-    new Date(fromDateInput.value);
-
-  const nextDay =
-    new Date(fromDate);
-
-  nextDay.setDate(
-    nextDay.getDate() + 1
-  );
-
-  toDateInput.min =
-    formatDate(nextDay);
-
-  if (
-    new Date(toDateInput.value)
-    <= fromDate
-  ) {
-
-    toDateInput.value =
-      formatDate(nextDay);
-
-  }
-
-  calculateTotal();
-
-  await loadBookings();
-
-  renderRooms();
-
-});
-
-toDateInput.addEventListener("change", async () => {
-
-  calculateTotal();
-
-  await loadBookings();
-
-  renderRooms();
-
-});
 
 function calculateTotal() {
 
@@ -895,20 +854,6 @@ async function createBooking() {
       "Booking failed"
     );
   }
-}
-
-const registerGuestBtn =
-  document.getElementById(
-    "registerGuestBtn"
-  );
-
-if (registerGuestBtn) {
-
-  registerGuestBtn.addEventListener(
-    "click",
-    registerGuest
-  );
-
 }
 
 /* ===========================

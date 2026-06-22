@@ -8,6 +8,8 @@ const currentUser =
     )
   );
 
+let lastBookings = [];
+
 if (
   !currentUser ||
   currentUser.role !== "ADMIN"
@@ -116,8 +118,16 @@ async function loadDashboard() {
 
   try {
 
+    const response =
+      await fetch(
+        `${API_BASE}/admin/dashboard`
+      );
+
     const data =
       await response.json();
+
+    lastBookings =
+      data.bookings || [];
 
     document.getElementById(
       "internalBookings"
@@ -136,14 +146,6 @@ async function loadDashboard() {
           b.user_type ===
           "EXTERNAL"
       ).length;
-
-    const response =
-      await fetch(
-        `${API_BASE}/admin/dashboard`
-      );
-
-    const data =
-      await response.json();
 
     document.getElementById(
       "totalRooms"
@@ -276,6 +278,9 @@ async function searchBookings() {
     const bookings =
       await response.json();
 
+    lastBookings =
+      bookings || [];
+
     const tbody =
       document.querySelector(
         "#bookingsTable tbody"
@@ -396,6 +401,62 @@ async function cancelBooking(id) {
   }
 
 }
+
+function exportToCSV() {
+
+  if (!lastBookings.length) {
+    alert("No bookings to export");
+    return;
+  }
+
+  const headers = [
+    "User Type",
+    "Employee / Guest",
+    "Mobile",
+    "Room",
+    "From",
+    "To",
+    "Amount",
+    "Status"
+  ];
+
+  const rows = lastBookings.map(b => [
+    b.user_type || "INTERNAL",
+    b.user_type === "EXTERNAL"
+      ? (b.guest_name || "")
+      : (b.employee_id || ""),
+    b.guest_mobile || b.mobile || "",
+    b.room_no || "",
+    b.from_date || "",
+    b.to_date || "",
+    b.total_amount || 0,
+    b.status || ""
+  ]);
+
+  const csvContent = [headers, ...rows]
+    .map(row =>
+      row
+        .map(cell => `"${String(cell).replace(/"/g, '""')}"`)
+        .join(",")
+    )
+    .join("\n");
+
+  const blob = new Blob(
+    [csvContent],
+    { type: "text/csv;charset=utf-8;" }
+  );
+
+  const link = document.createElement("a");
+  link.href = URL.createObjectURL(blob);
+  link.download = `bookings-${new Date().toISOString().split("T")[0]}.csv`;
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+}
+
+document
+  .getElementById("exportBtn")
+  .addEventListener("click", exportToCSV);
 
 function goBack() {
   window.location.href = "index.html";
