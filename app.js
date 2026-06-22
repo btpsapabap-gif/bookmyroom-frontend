@@ -850,6 +850,46 @@ async function createBooking() {
       );
     }
 
+    const response =
+      await fetch(
+        `${API_BASE}/bookings`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type":
+              "application/json"
+          },
+          body:
+            JSON.stringify(
+              payload
+            )
+        }
+      );
+
+    const result =
+      await response.json();
+
+    console.log(
+      "Booking API Response:",
+      result
+    );
+
+    const result =
+      await response.json();
+
+    console.log(
+      "Booking API Response:",
+      result
+    );
+
+    if (!response.ok) {
+
+      throw new Error(
+        result.message ||
+        "Booking failed"
+      );
+    }
+
     alert(
       "Booking Confirmed"
     );
