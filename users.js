@@ -1,118 +1,93 @@
-const express = require("express");
-const router = express.Router();
+const API_BASE =
+  "https://bookmyroom-api-aupi.onrender.com/api";
 
-const supabase = require("../supabase");
+const employeeIdInput =
+  document.getElementById("employeeId");
 
-router.post("/", async (req, res) => {
+const employeeNameInput =
+  document.getElementById("employeeName");
+
+const roleSelect =
+  document.getElementById("role");
+
+const createUserBtn =
+  document.getElementById("createUserBtn");
+
+const messageEl =
+  document.getElementById("message");
+
+createUserBtn.addEventListener(
+  "click",
+  createUser
+);
+
+async function createUser() {
+
+  const employee_id =
+    employeeIdInput.value.trim();
+
+  const name =
+    employeeNameInput.value.trim();
+
+  const role =
+    roleSelect.value;
+
+  if (!employee_id || !name) {
+    messageEl.textContent =
+      "Employee ID and Name are required";
+    return;
+  }
+
+  createUserBtn.disabled = true;
+  messageEl.textContent = "Creating user...";
 
   try {
 
-    const {
-      employee_id,
-      name,
-      role
-    } = req.body;
+    const response =
+      await fetch(
+        `${API_BASE}/users`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            employee_id,
+            name,
+            role
+          })
+        }
+      );
 
-    const { data: existing } =
-      await supabase
-        .from("users")
-        .select("*")
-        .eq("employee_id", employee_id)
-        .single();
+    const result =
+      await response.json();
 
-    if (existing) {
+    if (!result.success) {
 
-      return res.status(400).json({
-        success: false,
-        message: "Employee already exists"
-      });
+      messageEl.textContent =
+        result.message ||
+        "Unable to create user";
 
+      return;
     }
 
-    const { data, error } =
-      await supabase
-        .from("users")
-        .insert([{
-          employee_id,
-          name,
-          role
-        }])
-        .select();
+    messageEl.textContent =
+      `User ${result.user.name} created successfully`;
 
-    if (error) {
-
-      return res.status(500).json({
-        success: false,
-        message: error.message
-      });
-
-    }
-
-    res.json({
-      success: true,
-      user: data[0]
-    });
+    employeeIdInput.value = "";
+    employeeNameInput.value = "";
+    roleSelect.value = "USER";
 
   } catch (err) {
 
-    res.status(500).json({
-      success: false,
-      message: err.message
-    });
+    console.error(err);
+
+    messageEl.textContent =
+      "Server connection failed";
+
+  } finally {
+
+    createUserBtn.disabled = false;
 
   }
-
-});
-
-router.post("/login", async (req, res) => {
-
-  try {
-
-    const {
-      employee_id,
-      name
-    } = req.body;
-
-    if (!employee_id || !name) {
-
-      return res.status(400).json({
-        success: false,
-        message: "Employee ID and Name are required"
-      });
-
-    }
-
-    const { data: user, error } =
-      await supabase
-        .from("users")
-        .select("*")
-        .eq("employee_id", employee_id)
-        .ilike("name", name)
-        .single();
-
-    if (error || !user) {
-
-      return res.status(401).json({
-        success: false,
-        message: "Invalid Employee ID or Name"
-      });
-
-    }
-
-    res.json({
-      success: true,
-      user
-    });
-
-  } catch (err) {
-
-    res.status(500).json({
-      success: false,
-      message: err.message
-    });
-
-  }
-
-});
-
-module.exports = router;
+}
