@@ -47,33 +47,5 @@ router.post("/register", async (req, res) => {
 
 });
 
-/* Login Guest */
-
-router.post("/login", async (req, res) => {
-
-  const { mobile } = req.body;
-
-  const { data } =
-    await supabase
-      .from("guests")
-      .select("*")
-      .eq("mobile", mobile)
-      .single();
-
-  if (!data) {
-
-    return res.status(401).json({
-      success: false,
-      message: "Guest not found"
-    });
-
-  }
-
-  res.json({
-    success: true,
-    guest: data
-  });
-
-});
 
 module.exports = router;
