@@ -31,9 +31,21 @@ function openBookingModal(booking) {
   details.innerHTML = `
 
     <div class="detail-row">
-      <span class="detail-label">Employee:</span>
-      ${booking.employee_id || ""}
-    </div>
+  <span class="detail-label">
+    User Type:
+  </span>
+  ${booking.user_type || "INTERNAL"}
+</div>
+
+<div class="detail-row">
+  <span class="detail-label">
+    User:
+  </span>
+  ${booking.user_type === "EXTERNAL"
+      ? booking.guest_name
+      : booking.employee_id
+    }
+</div>
 
     <div class="detail-row">
       <span class="detail-label">Room:</span>
@@ -104,6 +116,27 @@ async function loadDashboard() {
 
   try {
 
+    const data =
+      await response.json();
+
+    document.getElementById(
+      "internalBookings"
+    ).textContent =
+      data.bookings.filter(
+        b =>
+          b.user_type !==
+          "EXTERNAL"
+      ).length;
+
+    document.getElementById(
+      "externalBookings"
+    ).textContent =
+      data.bookings.filter(
+        b =>
+          b.user_type ===
+          "EXTERNAL"
+      ).length;
+
     const response =
       await fetch(
         `${API_BASE}/admin/dashboard`
@@ -151,20 +184,53 @@ async function loadDashboard() {
           );
 
         row.innerHTML = `
-          <td>${booking.employee_id || ""}</td>
-          <td>${booking.room_no || ""}</td>
-          <td>
-            ${booking.from_date || ""}
-            <br>
-            ${booking.to_date || ""}
-          </td>
-          <td>
-            ₹${Number(
-          booking.total_amount || 0
-        ).toLocaleString("en-IN")}
-          </td>
-          <td>${booking.status || ""}</td>
-        `;
+  <td>
+    ${booking.user_type || "INTERNAL"}
+  </td>
+
+  <td>
+    ${booking.user_type === "EXTERNAL"
+            ? booking.guest_name
+            : booking.employee_id
+          }
+  </td>
+
+  <td>
+    ${booking.guest_mobile ||
+          booking.mobile ||
+          "-"
+          }
+  </td>
+
+  <td>
+    ${booking.room_no || ""}
+  </td>
+
+  <td>
+    ${booking.from_date || ""}
+  </td>
+
+  <td>
+    ${booking.to_date || ""}
+  </td>
+
+  <td>
+    ₹${Number(
+            booking.total_amount || 0
+          ).toLocaleString("en-IN")}
+  </td>
+
+  <td>
+    ${booking.status || ""}
+  </td>
+
+  <td>
+    <button
+      onclick="cancelBooking('${booking.id}')">
+      Cancel
+    </button>
+  </td>
+`;
 
         row.style.cursor =
           "pointer";
@@ -293,6 +359,43 @@ document
 
     }
   );
+
+async function cancelBooking(id) {
+
+  if (
+    !confirm(
+      "Cancel this booking?"
+    )
+  ) {
+    return;
+  }
+
+  try {
+
+    await fetch(
+      `${API_BASE}/bookings/${id}`,
+      {
+        method: "DELETE"
+      }
+    );
+
+    alert(
+      "Booking cancelled"
+    );
+
+    loadDashboard();
+
+  } catch (err) {
+
+    console.error(err);
+
+    alert(
+      "Unable to cancel booking"
+    );
+
+  }
+
+}
 
 function goBack() {
   window.location.href = "index.html";
