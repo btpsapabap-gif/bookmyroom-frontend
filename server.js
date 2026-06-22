@@ -69,6 +69,9 @@ app.use(
     usersRouter
 );
 
+const guestRoutes =
+  require("./routes/guests");
+  
 app.use(
     "/api/guests",
     require("./routes/guests")
