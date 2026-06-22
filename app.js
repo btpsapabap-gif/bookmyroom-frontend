@@ -124,7 +124,7 @@ async function registerGuest() {
 
   const response =
     await fetch(
-      `${API_BASE}/guests`,
+      `${API_BASE}/guests/register`,
       {
         method: "POST",
         headers: {
