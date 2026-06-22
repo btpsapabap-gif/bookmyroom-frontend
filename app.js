@@ -784,24 +784,6 @@ async function createBooking() {
   }
 }
 
-document
-  .getElementById("internalBtn")
-  .addEventListener("click", () => {
-
-    loginSection.classList.add("hidden");
-    internalLogin.classList.remove("hidden");
-
-  });
-
-document
-  .getElementById("externalBtn")
-  .addEventListener("click", () => {
-
-    loginSection.classList.add("hidden");
-    externalLogin.classList.remove("hidden");
-
-  });
-
 function showHome() {
 
   loginSection.classList.remove("hidden");
@@ -813,6 +795,24 @@ function showHome() {
 }
 
 function showGuestRegister() {
+
+  document
+    .getElementById("internalBtn")
+    .addEventListener("click", () => {
+
+      loginSection.classList.add("hidden");
+      internalLogin.classList.remove("hidden");
+
+    });
+
+  document
+    .getElementById("externalBtn")
+    .addEventListener("click", () => {
+
+      loginSection.classList.add("hidden");
+      externalLogin.classList.remove("hidden");
+
+    });
 
   externalLogin.classList.add("hidden");
 
