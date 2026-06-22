@@ -20,25 +20,345 @@
 
     <div class="login-card">
 
-      <h1>BookMyRoom</h1>
+      <!DOCTYPE html>
+      <html lang="en">
 
-      <p>Rooms Booking System</p>
+      <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>BookMyRoom</title>
 
-      <div class="form-group">
-        <label>Employee ID</label>
-        <input type="text" id="employeeId" placeholder="Enter Employee ID">
-      </div>
+        <link rel="stylesheet" href="styles.css">
 
-      <div class="form-group">
-        <label>Name</label>
-        <input type="text" id="employeeName" placeholder="Enter Name">
-      </div>
+        <meta name="theme-color" content="#0f766e">
+        <meta name="description" content="BookMyRoom Booking System">
+      </head>
 
-      <button id="loginBtn">
-        Login
-      </button>
+      <body>
 
-      <p id="loginMessage"></p>
+        <!-- LOGIN SCREEN -->
+
+        <section id="loginSection" class="login-screen">
+
+          <div class="login-card">
+
+            <h1>BookMyRoom</h1>
+
+            <p>Rooms Booking System</p>
+
+            <div class="form-group">
+              <label>Employee ID</label>
+              <input type="text" id="employeeId" placeholder="Enter Employee ID">
+            </div>
+
+            <div class="form-group">
+              <label>Name</label>
+              <input type="text" id="employeeName" placeholder="Enter Name">
+            </div>
+
+            <button id="loginBtn">
+              Login
+            </button>
+
+            <p id="loginMessage"></p>
+
+          </div>
+
+        </section>
+
+        <!-- APP -->
+
+        <div id="appContainer" class="hidden">
+
+          <!-- SIDEBAR -->
+
+          <aside class="sidebar">
+
+            <div class="brand">
+
+              <div class="brand-logo">
+                <img src="assets/Logo.webp" alt="BookMyRoom Logo">
+              </div>
+
+              <div>
+                <h2>BookMyRoom</h2>
+                <p>Room Booking</p>
+              </div>
+
+            </div>
+
+            <nav>
+
+              <div class="sidebar">
+
+                <a href="#rooms">Rooms</a>
+
+                <a href="#bookings">My Bookings</a>
+
+                <a id="adminMenu" href="admin.html">
+                  Admin Dashboard
+                </a>
+
+                <a id="occupancyMenu" href="calendar.html">
+                  Occupancy Calendar
+                </a>
+
+                <a id="createUserMenu" href="users.html">
+                  Create Users
+                </a>
+
+              </div>
+            </nav>
+
+          </aside>
+
+          <!-- MAIN -->
+
+          <main class="main-content">
+
+            <div class="top-header">
+
+              <h1 class="header-title">
+                BookMyRoom
+              </h1>
+
+              <div class="profile-menu">
+
+                <div class="profile-circle" id="profileCircle">
+                  C
+                </div>
+
+                <div class="profile-popup" id="profilePopup">
+
+                  <div class="profile-name" id="loggedUser">
+                  </div>
+
+                  <div class="profile-role" id="roleDisplay">
+                  </div>
+
+                  <button id="logoutBtn">
+                    Logout
+                  </button>
+
+                </div>
+
+              </div>
+
+            </div>
+
+            <!-- SEARCH PANEL -->
+
+            <section class="search-panel">
+
+              <div class="field">
+                <label>From Date</label>
+                <input type="date" id="fromDate">
+              </div>
+
+              <div class="field">
+                <label>To Date</label>
+                <input type="date" id="toDate">
+              </div>
+
+              <div class="field">
+                <label>Room Type</label>
+
+                <select id="roomType">
+                  <option value="AC">
+                    AC
+                  </option>
+
+                  <option value="Non-AC">
+                    Non-AC
+                  </option>
+                </select>
+              </div>
+
+              <div class="field">
+                <label>No Of People</label>
+
+                <input type="number" id="people" min="1" value="1">
+              </div>
+
+              <div class="field">
+                <label>Floor</label>
+
+                <input type="text" id="floor" readonly>
+              </div>
+
+            </section>
+
+            <!-- ROOMS -->
+
+            <section>
+
+              <div class="section-header">
+
+                <h2>
+                  Available Rooms
+                </h2>
+
+                <span id="roomCount">
+                  0 Rooms
+                </span>
+
+              </div>
+
+              <div id="roomsContainer" class="rooms-grid">
+              </div>
+
+            </section>
+
+            <!-- BOOKING FORM -->
+
+            <section id="bookingSection" class="booking-card hidden">
+
+              <h2>
+                Booking Details
+              </h2>
+
+              <div class="booking-grid">
+
+                <div class="field">
+                  <label>
+                    Selected Room
+                  </label>
+
+                  <input id="selectedRoom" readonly>
+                </div>
+
+                <div class="field">
+                  <label>
+                    Mobile Number
+                  </label>
+
+                  <input type="tel" id="mobile">
+                </div>
+
+                <div class="field">
+
+                  <label>
+                    ID Proof
+                  </label>
+
+                  <select id="idProof">
+
+                    <option value="">
+                      Select
+                    </option>
+
+                    <option value="AADHAR">
+                      AADHAR
+                    </option>
+
+                    <option value="PAN">
+                      PAN
+                    </option>
+
+                  </select>
+
+                </div>
+
+                <div class="field">
+
+                  <label>
+                    ID Number
+                  </label>
+
+                  <input type="text" id="idProofNo">
+
+                </div>
+
+                <div class="field">
+
+                  <label>
+                    ID Proof Image
+                  </label>
+
+                  <input type="file" id="idProofImage" accept=".pdf,image/*">
+
+                </div>
+
+              </div>
+
+              <div class="summary">
+
+                <p>
+                  Rate / Day:
+                  ₹<span id="roomRate">0</span>
+                </p>
+
+                <p>
+                  Capacity:
+                  <span id="roomCapacity">0</span>
+                </p>
+
+                <p>
+                  Days:
+                  <span id="totalDays">1</span>
+                </p>
+
+                <p>
+                  Total Bill:
+                  ₹<span id="totalAmount">0</span>
+                </p>
+
+              </div>
+
+              <button id="confirmBookingBtn">
+
+                Confirm Booking
+
+              </button>
+
+            </section>
+
+            <!-- MY BOOKINGS -->
+
+            <section class="my-bookings">
+
+              <div class="section-header">
+
+                <h2>
+                  My Bookings
+                </h2>
+
+              </div>
+
+              <div id="bookingsContainer" class="bookings-grid">
+              </div>
+
+            </section>
+
+          </main>
+
+        </div>
+
+        <div id="guestRegisterSection" class="hidden">
+
+          <h3>
+            Guest Registration
+          </h3>
+
+          <input id="guestName" placeholder="Name">
+
+          <input id="guestMobile" placeholder="Mobile">
+
+          <input id="guestEmail" placeholder="Email">
+
+          <button id="registerGuestBtn">
+
+            Register
+
+          </button>
+
+        </div>
+
+        <script src="app.js"></script>
+
+      </body>
+
+      </html>
 
     </div>
 
@@ -309,26 +629,6 @@
       </section>
 
     </main>
-
-  </div>
-
-  <div id="guestRegisterSection" class="hidden">
-
-    <h3>
-      Guest Registration
-    </h3>
-
-    <input id="guestName" placeholder="Name">
-
-    <input id="guestMobile" placeholder="Mobile">
-
-    <input id="guestEmail" placeholder="Email">
-
-    <button id="registerGuestBtn">
-
-      Register
-
-    </button>
 
   </div>
 

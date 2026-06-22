@@ -784,6 +784,50 @@ async function createBooking() {
   }
 }
 
+document
+  .getElementById("internalBtn")
+  .addEventListener("click", () => {
+
+    loginSection.classList.add("hidden");
+    internalLogin.classList.remove("hidden");
+
+  });
+
+document
+  .getElementById("externalBtn")
+  .addEventListener("click", () => {
+
+    loginSection.classList.add("hidden");
+    externalLogin.classList.remove("hidden");
+
+  });
+
+function showHome() {
+
+  loginSection.classList.remove("hidden");
+
+  internalLogin.classList.add("hidden");
+  externalLogin.classList.add("hidden");
+  guestRegisterSection.classList.add("hidden");
+
+}
+
+function showGuestRegister() {
+
+  externalLogin.classList.add("hidden");
+
+  guestRegisterSection.classList.remove("hidden");
+
+}
+
+function showExternalLogin() {
+
+  guestRegisterSection.classList.add("hidden");
+
+  externalLogin.classList.remove("hidden");
+
+}
+
 /* ===========================
    LOAD BOOKINGS
 =========================== */
