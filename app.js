@@ -813,6 +813,11 @@ async function createBooking() {
         "CONFIRMED"
     };
 
+    console.log(
+      "Booking Payload",
+      payload
+    );
+
     const response =
       await fetch(
         `${API_BASE}/bookings`,
@@ -829,9 +834,18 @@ async function createBooking() {
         }
       );
 
+    const result =
+      await response.json();
+
+    console.log(
+      "Booking API Response:",
+      result
+    );
+
     if (!response.ok) {
 
       throw new Error(
+        result.message ||
         "Booking failed"
       );
     }
