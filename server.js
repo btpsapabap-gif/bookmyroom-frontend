@@ -61,20 +61,12 @@ app.use(
     adminRoute
 );
 
-const usersRouter =
-    require("./routes/users");
-
-app.use(
-    "/api/users",
-    usersRouter
-);
-
 const guestRoutes =
   require("./routes/guests");
-  
+
 app.use(
     "/api/guests",
-    require("./routes/guests")
+     guestRoutes
 );
 
 app.get(

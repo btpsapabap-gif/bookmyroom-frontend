@@ -47,5 +47,11 @@ router.post("/register", async (req, res) => {
 
 });
 
+router.get("/test", (req, res) => {
+  res.json({
+    success: true,
+    message: "Guests route working"
+  });
+});
 
 module.exports = router;
