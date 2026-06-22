@@ -69,14 +69,9 @@ app.use(
     usersRouter
 );
 
-const externalRoutes =
-  require(
-    "./routes/external"
-  );
-
-  app.use(
-  "/api/external",
-  externalRoutes
+app.use(
+    "/api/guests",
+    require("./routes/guests")
 );
 
 app.get(

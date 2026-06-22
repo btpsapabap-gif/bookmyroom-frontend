@@ -67,6 +67,110 @@ const bookingsContainer =
   document.getElementById("bookingsContainer");
 
 /* ===========================
+Newly added
+=========================== */
+const employeeBtn =
+  document.getElementById("employeeBtn");
+
+const guestBtn =
+  document.getElementById("guestBtn");
+
+const employeeLogin =
+  document.getElementById("employeeLogin");
+
+const guestSection =
+  document.getElementById("guestSection");
+
+guestBtn.addEventListener(
+  "click",
+  () => {
+
+    employeeLogin.classList.add(
+      "hidden"
+    );
+
+    guestSection.classList.remove(
+      "hidden"
+    );
+
+  }
+);
+
+document
+  .getElementById(
+    "registerGuestBtn"
+  )
+  .addEventListener(
+    "click",
+    registerGuest
+  );
+
+async function registerGuest() {
+
+  const guest_name =
+    document.getElementById(
+      "guestName"
+    ).value;
+
+  const mobile =
+    document.getElementById(
+      "guestMobile"
+    ).value;
+
+  const email =
+    document.getElementById(
+      "guestEmail"
+    ).value;
+
+  const response =
+    await fetch(
+      `${API_BASE}/guests/register`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type":
+            "application/json"
+        },
+        body: JSON.stringify({
+          guest_name,
+          mobile,
+          email
+        })
+      }
+    );
+
+  const result =
+    await response.json();
+
+  if (!result.success) {
+
+    alert(result.message);
+
+    return;
+  }
+
+  currentUser = {
+
+    id: result.guest.id,
+    name: result.guest.guest_name,
+    mobile,
+    role: "GUEST"
+
+  };
+
+  localStorage.setItem(
+    "bookmyroom_user",
+    JSON.stringify(currentUser)
+  );
+
+  showApp();
+
+  await loadRooms();
+
+  await loadBookings();
+}
+
+/* ===========================
    STARTUP
 =========================== */
 
@@ -212,6 +316,20 @@ async function login() {
 }
 
 function showApp() {
+
+  if (
+    currentUser.role === "GUEST"
+  ) {
+
+    adminMenu.style.display =
+      "none";
+
+    occupancyMenu.style.display =
+      "none";
+
+    createUserMenu.style.display =
+      "none";
+  }
 
   loginSection.classList.add("hidden");
   appContainer.classList.remove("hidden");
@@ -681,6 +799,16 @@ async function createBooking() {
       employee_id:
         currentUser.employee_id || null,
 
+      booking_type:
+        currentUser.role === "GUEST"
+          ? "EXTERNAL"
+          : "INTERNAL",
+
+      guest_id:
+        currentUser.role === "GUEST"
+          ? currentUser.id
+          : null,
+
       room_id:
         selectedRoom.id,
 
@@ -721,21 +849,6 @@ async function createBooking() {
 
       id_proof_image:
         imageUrl,
-
-      /* NEW */
-
-      user_type:
-        currentUser.user_type ||
-        "INTERNAL",
-
-      guest_name:
-        currentUser.name || null,
-
-      guest_mobile:
-        currentUser.mobile || null,
-
-      guest_email:
-        currentUser.email || null,
 
       status:
         "CONFIRMED"
@@ -784,6 +897,126 @@ async function createBooking() {
   }
 }
 
+const registerGuestBtn =
+  document.getElementById(
+    "registerGuestBtn"
+  );
+
+if (registerGuestBtn) {
+
+  registerGuestBtn.addEventListener(
+    "click",
+    registerGuest
+  );
+
+}
+
+async function registerGuest() {
+
+  try {
+
+    const guest_name =
+      document.getElementById(
+        "guestName"
+      ).value.trim();
+
+    const mobile =
+      document.getElementById(
+        "guestMobile"
+      ).value.trim();
+
+    const email =
+      document.getElementById(
+        "guestEmail"
+      ).value.trim();
+
+    if (
+      !guest_name ||
+      !mobile
+    ) {
+
+      alert(
+        "Name and Mobile are required"
+      );
+
+      return;
+
+    }
+
+    const response =
+      await fetch(
+        `${API_BASE}/guests/register`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type":
+              "application/json"
+          },
+          body: JSON.stringify({
+            guest_name,
+            mobile,
+            email
+          })
+        }
+      );
+
+    const result =
+      await response.json();
+
+    if (!result.success) {
+
+      alert(
+        result.message
+      );
+
+      return;
+
+    }
+
+    currentUser = {
+
+      id:
+        result.guest.id,
+
+      name:
+        result.guest.guest_name,
+
+      mobile:
+        result.guest.mobile,
+
+      email:
+        result.guest.email,
+
+      role:
+        "GUEST"
+
+    };
+
+    localStorage.setItem(
+      "bookmyroom_user",
+      JSON.stringify(
+        currentUser
+      )
+    );
+
+    showApp();
+
+    await loadRooms();
+
+    await loadBookings();
+
+  } catch (err) {
+
+    console.error(err);
+
+    alert(
+      "Guest registration failed"
+    );
+
+  }
+
+}
+
 /* ===========================
    LOAD BOOKINGS
 =========================== */
@@ -816,11 +1049,26 @@ async function loadBookings() {
 function renderBookings() {
 
   const mine =
-    bookings.filter(
-      b =>
+    bookings.filter(b => {
+
+      if (
+        currentUser.role ===
+        "GUEST"
+      ) {
+
+        return (
+          b.guest_id ===
+          currentUser.id
+        );
+
+      }
+
+      return (
         b.employee_id ===
         currentUser.employee_id
-    );
+      );
+
+    });
 
   bookingsContainer.innerHTML =
     "";
