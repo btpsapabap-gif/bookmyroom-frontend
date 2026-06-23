@@ -33,62 +33,44 @@ const roomCount = document.getElementById("roomCount");
 
 const bookingSection = document.getElementById("bookingSection");
 
-const selectedRoomInput =
-  document.getElementById("selectedRoom");
+const selectedRoomInput = document.getElementById("selectedRoom");
 
-const mobileInput =
-  document.getElementById("mobile");
+const mobileInput = document.getElementById("mobile");
 
-const idProofInput =
-  document.getElementById("idProof");
+const idProofInput = document.getElementById("idProof");
 
-const idProofNoInput =
-  document.getElementById("idProofNo");
+const idProofNoInput = document.getElementById("idProofNo");
 
-const idProofImage =
-  document.getElementById("idProofImage");
+const idProofImage = document.getElementById("idProofImage");
 
-const roomRate =
-  document.getElementById("roomRate");
+const roomRate = document.getElementById("roomRate");
 
-const roomCapacity =
-  document.getElementById("roomCapacity");
+const roomCapacity = document.getElementById("roomCapacity");
 
-const totalAmount =
-  document.getElementById("totalAmount");
+const totalAmount = document.getElementById("totalAmount");
 
-const totalDays =
-  document.getElementById("totalDays");
+const totalDays = document.getElementById("totalDays");
 
-const confirmBookingBtn =
-  document.getElementById("confirmBookingBtn");
+const confirmBookingBtn = document.getElementById("confirmBookingBtn");
 
-const bookingsContainer =
-  document.getElementById("bookingsContainer");
+const bookingsContainer = document.getElementById("bookingsContainer");
 
-const adminMenu =
-  document.getElementById("adminMenu");
+const adminMenu = document.getElementById("adminMenu");
 
-const occupancyMenu =
-  document.getElementById("occupancyMenu");
+const occupancyMenu = document.getElementById("occupancyMenu");
 
-const createUserMenu =
-  document.getElementById("createUserMenu");
+const createUserMenu = document.getElementById("createUserMenu");
 
 /* ===========================
 Newly added
 =========================== */
-const employeeBtn =
-  document.getElementById("employeeBtn");
+const employeeBtn = document.getElementById("employeeBtn");
 
-const guestBtn =
-  document.getElementById("guestBtn");
+const guestBtn = document.getElementById("guestBtn");
 
-const employeeLogin =
-  document.getElementById("employeeLogin");
+const employeeLogin = document.getElementById("employeeLogin");
 
-const guestSection =
-  document.getElementById("guestSection");
+const guestSection = document.getElementById("guestSection");
 
 guestBtn.addEventListener(
   "click",
@@ -116,20 +98,15 @@ document
 
 async function registerGuest() {
 
-  const guest_name =
-    document.getElementById(
-      "guestName"
-    ).value;
+  const guest_name = document.getElementById("guestName").value;
 
-  const mobile =
-    document.getElementById(
-      "guestMobile"
-    ).value;
+  const mobile = document.getElementById("guestMobile").value;
 
-  const email =
-    document.getElementById(
-      "guestEmail"
-    ).value;
+  const password = document.getElementById("guestPassword").value;
+
+  const bcrypt = require("bcrypt");
+
+const hashedPassword = await bcrypt.hash(password, 10);
 
   const response =
     await fetch(
@@ -143,13 +120,12 @@ async function registerGuest() {
         body: JSON.stringify({
           guest_name,
           mobile,
-          email
+          password
         })
       }
     );
 
-  const result =
-    await response.json();
+  const result = await response.json();
 
   if (!result.success) {
 
@@ -177,6 +153,60 @@ async function registerGuest() {
   await loadRooms();
 
   await loadBookings();
+}
+
+document
+  .getElementById("guestLoginBtn")
+  .addEventListener(
+    "click",
+    guestLogin
+  );
+
+async function guestLogin() {
+
+  const mobile =
+    document.getElementById(
+      "guestLoginMobile"
+    ).value;
+
+  const password =
+    document.getElementById(
+      "guestLoginPassword"
+    ).value;
+
+  const response =
+    await fetch(
+      `${API_BASE}/users/guest-login`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type":
+            "application/json"
+        },
+        body: JSON.stringify({
+          mobile,
+          password
+        })
+      }
+    );
+
+  const result =
+    await response.json();
+
+  if (!result.success) {
+
+    alert(result.message);
+    return;
+
+  }
+
+  localStorage.setItem(
+    "user",
+    JSON.stringify(result.user)
+  );
+
+  window.location.href = "dashboard.html";
+
 }
 
 /* ===========================
@@ -213,11 +243,9 @@ loginBtn.addEventListener("click", login);
 
 async function login() {
 
-  const employee_id =
-    employeeIdInput.value.trim();
+  const employee_id = employeeIdInput.value.trim();
 
-  const name =
-    employeeNameInput.value.trim();
+  const name = employeeNameInput.value.trim();
 
   if (!employee_id || !name) {
 
@@ -328,15 +356,47 @@ function showApp() {
   loginSection.classList.add("hidden");
   appContainer.classList.remove("hidden");
 
-  loggedUser.textContent =
-    `${currentUser.employee_id} - ${currentUser.name}`;
+  loggedUser.textContent = `${currentUser.employee_id} - ${currentUser.name}`;
+
+  document.getElementById("profileCircle").textContent = currentUser.name
+    .charAt(0)
+    .toUpperCase();
+}
+
+document.addEventListener("DOMContentLoaded", async () => {
+
+  const currentUser =
+    JSON.parse(localStorage.getItem("user"));
+
+  if (currentUser) {
+
+    document.getElementById("loginSection")
+      .classList.add("hidden");
+
+    document.getElementById("appContainer")
+      .classList.remove("hidden");
+
+    document.getElementById("loggedUser").innerText =
+      currentUser.name;
+
+    document.getElementById("roleDisplay").innerText =
+      currentUser.role;
+
+    document.getElementById("profileCircle").innerText =
+      currentUser.name.charAt(0).toUpperCase();
+
+  }
+
+});
+
+if (
+  currentUser.role === "GUEST"
+) {
 
   document.getElementById(
-    "profileCircle"
-  ).textContent =
-    currentUser.name
-      .charAt(0)
-      .toUpperCase();
+    "adminMenu"
+  ).style.display = "none";
+
 }
 
 /* ===========================
