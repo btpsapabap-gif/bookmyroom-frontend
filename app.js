@@ -72,21 +72,22 @@ const employeeLogin = document.getElementById("employeeLogin");
 
 const guestSection = document.getElementById("guestSection");
 
-guestBtn.addEventListener(
-  "click",
-  () => {
+if (guestBtn) {
+  guestBtn.addEventListener(
+    "click",
+    () => {
 
-    employeeLogin.classList.add(
-      "hidden"
-    );
+      employeeLogin.classList.add(
+        "hidden"
+      );
 
-    guestSection.classList.remove(
-      "hidden"
-    );
+      guestSection.classList.remove(
+        "hidden"
+      );
 
-  }
-);
-
+    }
+  );
+}
 document
   .getElementById(
     "registerGuestBtn"
@@ -103,10 +104,6 @@ async function registerGuest() {
   const mobile = document.getElementById("guestMobile").value;
 
   const password = document.getElementById("guestPassword").value;
-
-  const bcrypt = require("bcrypt");
-
-const hashedPassword = await bcrypt.hash(password, 10);
 
   const response =
     await fetch(
@@ -176,7 +173,7 @@ async function guestLogin() {
 
   const response =
     await fetch(
-      `${API_BASE}/users/guest-login`,
+      `${API_BASE}/guests/login`,
       {
         method: "POST",
         headers: {
@@ -200,12 +197,22 @@ async function guestLogin() {
 
   }
 
+  currentUser = {
+    id: result.guest.id,
+    name: result.guest.guest_name,
+    mobile: result.guest.mobile,
+    role: "GUEST"
+  };
+
   localStorage.setItem(
-    "user",
-    JSON.stringify(result.user)
+    "bookmyroom_user",
+    JSON.stringify(currentUser)
   );
 
-  window.location.href = "dashboard.html";
+  showApp();
+
+  await loadRooms();
+  await loadBookings();
 
 }
 
@@ -356,46 +363,29 @@ function showApp() {
   loginSection.classList.add("hidden");
   appContainer.classList.remove("hidden");
 
-  loggedUser.textContent = `${currentUser.employee_id} - ${currentUser.name}`;
+  if (currentUser.role === "GUEST") {
+
+    loggedUser.textContent = currentUser.name;
+
+  } else {
+
+    loggedUser.textContent =
+      `${currentUser.employee_id} - ${currentUser.name}`;
+
+  }
 
   document.getElementById("profileCircle").textContent = currentUser.name
     .charAt(0)
     .toUpperCase();
 }
 
-document.addEventListener("DOMContentLoaded", async () => {
-
-  const currentUser =
-    JSON.parse(localStorage.getItem("user"));
-
-  if (currentUser) {
-
-    document.getElementById("loginSection")
-      .classList.add("hidden");
-
-    document.getElementById("appContainer")
-      .classList.remove("hidden");
-
-    document.getElementById("loggedUser").innerText =
-      currentUser.name;
-
-    document.getElementById("roleDisplay").innerText =
-      currentUser.role;
-
-    document.getElementById("profileCircle").innerText =
-      currentUser.name.charAt(0).toUpperCase();
-
-  }
-
-});
 
 if (
+  currentUser &&
   currentUser.role === "GUEST"
 ) {
 
-  document.getElementById(
-    "adminMenu"
-  ).style.display = "none";
+  document.getElementById("adminMenu").style.display = "none";
 
 }
 
@@ -877,38 +867,6 @@ async function createBooking() {
       "Booking Payload",
       payload
     );
-
-    const response =
-      await fetch(
-        `${API_BASE}/bookings`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type":
-              "application/json"
-          },
-          body:
-            JSON.stringify(
-              payload
-            )
-        }
-      );
-
-    const result =
-      await response.json();
-
-    console.log(
-      "Booking API Response:",
-      result
-    );
-
-    if (!response.ok) {
-
-      throw new Error(
-        result.message ||
-        "Booking failed"
-      );
-    }
 
     const response =
       await fetch(
