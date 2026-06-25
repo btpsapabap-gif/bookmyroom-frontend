@@ -892,14 +892,6 @@ async function createBooking() {
       result
     );
 
-    const result =
-      await response.json();
-
-    console.log(
-      "Booking API Response:",
-      result
-    );
-
     if (!response.ok) {
 
       throw new Error(
