@@ -999,3 +999,10 @@ select:focus {
 .guest-tabs button {
   flex: 1;
 }
+
+#loginBtn,
+#registerGuestBtn,
+#guestLoginBtn {
+    width: 100%;
+    padding: 12px;
+}
