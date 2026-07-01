@@ -1,0 +1,760 @@
+/* ===========================================================
+   BookMyRoom Pro
+   Admin Dashboard
+=========================================================== */
+
+body {
+
+    background: #f4f7fb;
+
+}
+
+/* ===========================================================
+   LAYOUT
+=========================================================== */
+
+.dashboard {
+
+    display: flex;
+
+    min-height: 100vh;
+
+}
+
+/* ===========================================================
+   SIDEBAR
+=========================================================== */
+
+.sidebar {
+
+    width: 260px;
+
+    background: #0f766e;
+
+    color: white;
+
+    position: fixed;
+
+    left: 0;
+
+    top: 0;
+
+    bottom: 0;
+
+    padding: 30px 20px;
+
+}
+
+.sidebar h2 {
+
+    color: white;
+
+    text-align: center;
+
+    margin-bottom: 40px;
+
+}
+
+.sidebar ul {
+
+    list-style: none;
+
+}
+
+.sidebar li {
+
+    padding: 15px;
+
+    margin-bottom: 12px;
+
+    border-radius: 12px;
+
+    cursor: pointer;
+
+    transition: .3s;
+
+}
+
+.sidebar li:hover {
+
+    background: rgba(255, 255, 255, .12);
+
+}
+
+.sidebar .active {
+
+    background: white;
+
+    color: #0f766e;
+
+    font-weight: 600;
+
+}
+
+/* ===========================================================
+   CONTENT
+=========================================================== */
+
+.content {
+
+    flex: 1;
+
+    margin-left: 260px;
+
+    padding: 35px;
+
+}
+
+/* ===========================================================
+   TOP BAR
+=========================================================== */
+
+.topbar {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    margin-bottom: 35px;
+
+}
+
+.topbar h1 {
+
+    color: #1f2937;
+
+}
+
+.topbar p {
+
+    margin-top: 6px;
+
+}
+
+/* ===========================================================
+   KPI CARDS
+=========================================================== */
+
+.stats-grid {
+
+    display: grid;
+
+    grid-template-columns:
+
+        repeat(4, 1fr);
+
+    gap: 25px;
+
+    margin-bottom: 35px;
+
+}
+
+.stat-card {
+
+    background: white;
+
+    border-radius: 18px;
+
+    padding: 25px;
+
+    box-shadow:
+
+        0 10px 25px rgba(0, 0, 0, .08);
+
+    transition: .25s;
+
+}
+
+.stat-card:hover {
+
+    transform: translateY(-5px);
+
+}
+
+.stat-card h3 {
+
+    color: #6b7280;
+
+    font-size: 16px;
+
+    margin-bottom: 18px;
+
+}
+
+.stat-card h1 {
+
+    color: #0f766e;
+
+    font-size: 34px;
+
+}
+
+.stat-card .icon {
+
+    width: 60px;
+
+    height: 60px;
+
+    border-radius: 15px;
+
+    background: #ecfeff;
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    font-size: 30px;
+
+    margin-bottom: 20px;
+
+}
+
+/* ===========================================================
+   TABLE CARD
+=========================================================== */
+
+.table-card {
+
+    background: white;
+
+    border-radius: 18px;
+
+    padding: 25px;
+
+    box-shadow:
+
+        0 10px 25px rgba(0, 0, 0, .08);
+
+}
+
+.table-header {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    margin-bottom: 25px;
+
+}
+
+.table-card table {
+
+    width: 100%;
+
+    border-collapse: collapse;
+
+}
+
+.table-card th {
+
+    background: #0f766e;
+
+    color: white;
+
+    padding: 15px;
+
+    text-align: left;
+
+}
+
+.table-card td {
+
+    padding: 15px;
+
+    border-bottom:
+
+        1px solid #edf2f7;
+
+}
+
+.table-card tr:hover {
+
+    background: #f8fafc;
+
+}
+
+/* ===========================================================
+   STATUS
+=========================================================== */
+
+.status-confirmed {
+
+    display: inline-block;
+
+    background: #dcfce7;
+
+    color: #166534;
+
+    padding: 6px 14px;
+
+    border-radius: 25px;
+
+    font-size: 13px;
+
+    font-weight: 600;
+
+}
+
+.status-cancelled {
+
+    display: inline-block;
+
+    background: #fee2e2;
+
+    color: #991b1b;
+
+    padding: 6px 14px;
+
+    border-radius: 25px;
+
+    font-size: 13px;
+
+    font-weight: 600;
+
+}
+
+/* ===========================================================
+   ACTION BUTTONS
+=========================================================== */
+
+.action-btn {
+
+    padding: 8px 16px;
+
+    border-radius: 8px;
+
+    border: none;
+
+    cursor: pointer;
+
+    font-weight: 600;
+
+}
+
+.view-btn {
+
+    background: #dbeafe;
+
+    color: #1d4ed8;
+
+}
+
+.delete-btn {
+
+    background: #fee2e2;
+
+    color: #dc2626;
+
+}
+
+.action-btn:hover {
+
+    opacity: .85;
+
+}
+
+/* ===========================================================
+   FILTER BAR
+=========================================================== */
+
+.filter-bar {
+
+    display: flex;
+
+    gap: 15px;
+
+    margin-bottom: 25px;
+
+    flex-wrap: wrap;
+
+}
+
+.filter-bar input,
+
+.filter-bar select {
+
+    width: 220px;
+
+}
+
+/* ===========================================================
+   RESPONSIVE
+=========================================================== */
+
+@media(max-width:1200px) {
+
+    .stats-grid {
+
+        grid-template-columns:
+
+            repeat(2, 1fr);
+
+    }
+
+}
+
+@media(max-width:768px) {
+
+    .sidebar {
+
+        display: none;
+
+    }
+
+    .content {
+
+        margin-left: 0;
+
+        padding: 20px;
+
+    }
+
+    .stats-grid {
+
+        grid-template-columns: 1fr;
+
+    }
+
+    .topbar {
+
+        flex-direction: column;
+
+        align-items: flex-start;
+
+        gap: 20px;
+
+    }
+
+    .table-card {
+
+        overflow-x: auto;
+
+    }
+
+    table {
+
+        min-width: 850px;
+
+    }
+
+    .filter-bar {
+
+        flex-direction: column;
+
+    }
+
+    .filter-bar input,
+
+    .filter-bar select {
+
+        width: 100%;
+
+    }
+
+}
+
+/* ==========================================
+   WIDGET GRID
+========================================== */
+
+.widget-grid {
+
+    display: grid;
+
+    grid-template-columns: 1fr 1fr;
+
+    gap: 25px;
+
+    margin-top: 30px;
+
+}
+
+.widget-card {
+
+    background: white;
+
+    border-radius: 18px;
+
+    padding: 25px;
+
+    box-shadow: 0 10px 25px rgba(0, 0, 0, .08);
+
+}
+
+.widget-header {
+
+    margin-bottom: 25px;
+
+}
+
+/* ==========================================
+   OCCUPANCY
+========================================== */
+
+.progress-item {
+
+    margin-bottom: 22px;
+
+}
+
+.progress-title {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    margin-bottom: 8px;
+
+    font-weight: 600;
+
+}
+
+.progress {
+
+    width: 100%;
+
+    height: 12px;
+
+    border-radius: 20px;
+
+    background: #e5e7eb;
+
+    overflow: hidden;
+
+}
+
+.progress-fill {
+
+    height: 100%;
+
+    width: 0%;
+
+    background: linear-gradient(90deg,
+
+            #0f766e,
+
+            #14b8a6);
+
+    transition: .5s;
+
+}
+
+/* ==========================================
+   BOOKING TYPE
+========================================== */
+
+.dist-row {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    padding: 18px 0;
+
+    border-bottom: 1px solid #eee;
+
+}
+
+.dist-row:last-child {
+
+    border: none;
+
+}
+
+/* ==========================================
+   QUICK ACTIONS
+========================================== */
+
+.quick-actions {
+
+    display: grid;
+
+    grid-template-columns: repeat(5, 1fr);
+
+    gap: 18px;
+
+}
+
+.quick-btn {
+
+    height: 90px;
+
+    border: none;
+
+    border-radius: 15px;
+
+    background: #f8fafc;
+
+    font-size: 15px;
+
+    font-weight: 600;
+
+    transition: .25s;
+
+}
+
+.quick-btn:hover {
+
+    background: #0f766e;
+
+    color: white;
+
+}
+
+/* ==========================================
+   MOBILE
+========================================== */
+
+@media(max-width:900px) {
+
+    .widget-grid {
+
+        grid-template-columns: 1fr;
+
+    }
+
+    .quick-actions {
+
+        grid-template-columns: repeat(2, 1fr);
+
+    }
+
+}
+
+@media(max-width:600px) {
+
+    .quick-actions {
+
+        grid-template-columns: 1fr;
+
+    }
+
+}
+
+/* ==========================================
+   BOOKING TABLE
+========================================== */
+
+.table-card {
+
+    margin-top: 30px;
+
+}
+
+.table-header {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    margin-bottom: 20px;
+
+}
+
+.filter-bar {
+
+    display: flex;
+
+    gap: 15px;
+
+    flex-wrap: wrap;
+
+    margin-bottom: 20px;
+
+}
+
+.filter-bar input,
+
+.filter-bar select {
+
+    width: 220px;
+
+}
+
+#bookingTable {
+
+    width: 100%;
+
+    border-collapse: collapse;
+
+}
+
+#bookingTable th {
+
+    background: #0f766e;
+
+    color: white;
+
+    padding: 14px;
+
+}
+
+#bookingTable td {
+
+    padding: 14px;
+
+    border-bottom: 1px solid #eee;
+
+}
+
+#bookingTable tr:hover {
+
+    background: #f9fafb;
+
+}
+
+/* ==========================================
+   ACTION BUTTONS
+========================================== */
+
+.action-btn {
+
+    padding: 8px 14px;
+
+    border-radius: 8px;
+
+    border: none;
+
+    cursor: pointer;
+
+}
+
+.view-btn {
+
+    background: #dbeafe;
+
+    color: #1d4ed8;
+
+}
+
+.cancel-btn {
+
+    background: #fee2e2;
+
+    color: #dc2626;
+
+}
+
+@media(max-width:900px) {
+
+    .table-card {
+
+        overflow: auto;
+
+    }
+
+    #bookingTable {
+
+        min-width: 1200px;
+
+    }
+
+}

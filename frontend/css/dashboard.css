@@ -1,0 +1,818 @@
+/* ===========================================================
+   BookMyRoom Pro
+   Dashboard
+=========================================================== */
+
+body {
+
+    background: #f5f7fb;
+
+}
+
+/* ===========================================================
+   MAIN LAYOUT
+=========================================================== */
+
+.dashboard {
+
+    display: flex;
+
+    min-height: 100vh;
+
+}
+
+/* ===========================================================
+   SIDEBAR
+=========================================================== */
+
+.sidebar {
+
+    width: 260px;
+
+    background: #0f766e;
+
+    color: white;
+
+    display: flex;
+
+    flex-direction: column;
+
+    padding: 30px 20px;
+
+    position: fixed;
+
+    left: 0;
+
+    top: 0;
+
+    bottom: 0;
+
+}
+
+.sidebar h2 {
+
+    text-align: center;
+
+    margin-bottom: 40px;
+
+    color: white;
+
+}
+
+.sidebar ul {
+
+    list-style: none;
+
+}
+
+.sidebar li {
+
+    padding: 16px;
+
+    margin-bottom: 10px;
+
+    border-radius: 12px;
+
+    cursor: pointer;
+
+    transition: .3s;
+
+    font-weight: 500;
+
+}
+
+.sidebar li:hover {
+
+    background: rgba(255, 255, 255, .12);
+
+}
+
+.sidebar .active {
+
+    background: white;
+
+    color: #0f766e;
+
+    font-weight: 600;
+
+}
+
+/* ===========================================================
+   CONTENT
+=========================================================== */
+
+.content {
+
+    flex: 1;
+
+    margin-left: 260px;
+
+    padding: 35px;
+
+}
+
+/* ===========================================================
+   TOPBAR
+=========================================================== */
+
+.topbar {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    margin-bottom: 35px;
+
+}
+
+.topbar h1 {
+
+    color: #1f2937;
+
+}
+
+.topbar p {
+
+    margin-top: 6px;
+
+}
+
+.profile {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 15px;
+
+}
+
+/* ===========================================================
+   ROOM GRID
+=========================================================== */
+
+.section-title {
+
+    font-size: 26px;
+
+    font-weight: 600;
+
+    margin-bottom: 25px;
+
+}
+
+.room-grid {
+
+    display: grid;
+
+    grid-template-columns:
+
+        repeat(auto-fit, minmax(320px, 1fr));
+
+    gap: 28px;
+
+}
+
+/* ===========================================================
+   ROOM CARD
+=========================================================== */
+
+.room-card {
+
+    background: white;
+
+    border-radius: 18px;
+
+    overflow: hidden;
+
+    box-shadow:
+
+        0 10px 25px rgba(0, 0, 0, .08);
+
+    transition: .35s;
+
+}
+
+.room-card:hover {
+
+    transform: translateY(-6px);
+
+    box-shadow:
+
+        0 18px 35px rgba(0, 0, 0, .15);
+
+}
+
+/* Room Image */
+
+.room-image {
+
+    height: 190px;
+
+    background: linear-gradient(135deg,
+
+            #14b8a6,
+
+            #0f766e);
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    color: white;
+
+    font-size: 70px;
+
+}
+
+/* Body */
+
+.room-body {
+
+    padding: 24px;
+
+}
+
+.room-name {
+
+    font-size: 22px;
+
+    font-weight: 600;
+
+    margin-bottom: 12px;
+
+}
+
+.room-info {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    margin-bottom: 12px;
+
+    color: #6b7280;
+
+}
+
+.room-price {
+
+    font-size: 28px;
+
+    color: #0f766e;
+
+    font-weight: 700;
+
+}
+
+.room-price span {
+
+    font-size: 14px;
+
+    color: #6b7280;
+
+}
+
+/* Status */
+
+.status {
+
+    display: inline-block;
+
+    margin-top: 12px;
+
+    padding: 7px 14px;
+
+    border-radius: 25px;
+
+    background: #dcfce7;
+
+    color: #166534;
+
+    font-size: 13px;
+
+    font-weight: 600;
+
+}
+
+.room-card button {
+
+    margin-top: 22px;
+
+}
+
+/* ===========================================================
+   RESPONSIVE
+=========================================================== */
+
+@media(max-width:900px) {
+
+    .sidebar {
+
+        width: 80px;
+
+    }
+
+    .sidebar h2 {
+
+        font-size: 18px;
+
+    }
+
+    .sidebar li {
+
+        text-align: center;
+
+        font-size: 13px;
+
+        padding: 14px 6px;
+
+    }
+
+    .content {
+
+        margin-left: 80px;
+
+    }
+
+}
+
+@media(max-width:768px) {
+
+    .topbar {
+
+        flex-direction: column;
+
+        align-items: flex-start;
+
+        gap: 20px;
+
+    }
+
+    .room-grid {
+
+        grid-template-columns: 1fr;
+
+    }
+
+}
+
+@media(max-width:600px) {
+
+    .sidebar {
+
+        display: none;
+
+    }
+
+    .content {
+
+        margin-left: 0;
+
+        padding: 20px;
+
+    }
+
+    .section-title {
+
+        font-size: 22px;
+
+    }
+
+    .room-price {
+
+        font-size: 24px;
+
+    }
+
+}
+
+/* ===========================================================
+   PROFILE
+=========================================================== */
+
+.profile {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 18px;
+
+}
+
+.profile-circle {
+
+    width: 52px;
+
+    height: 52px;
+
+    border-radius: 50%;
+
+    background: #0f766e;
+
+    color: white;
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    font-size: 22px;
+
+    font-weight: 600;
+
+    box-shadow: 0 5px 15px rgba(15, 118, 110, .3);
+
+}
+
+/* ===========================================================
+   WELCOME
+=========================================================== */
+
+.welcome-card {
+
+    background: linear-gradient(135deg,
+            #0f766e,
+            #14b8a6);
+
+    color: white;
+
+    border-radius: 20px;
+
+    padding: 30px;
+
+    margin-bottom: 30px;
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+}
+
+.welcome-card h2 {
+
+    color: white;
+
+    margin-bottom: 10px;
+
+}
+
+.welcome-card p {
+
+    color: #ecfeff;
+
+}
+
+/* ===========================================================
+   ACTIVE BOOKING
+=========================================================== */
+
+.card {
+
+    background: white;
+
+    border-radius: 18px;
+
+    padding: 25px;
+
+    margin-bottom: 30px;
+
+    box-shadow: 0 10px 25px rgba(0, 0, 0, .08);
+
+}
+
+.card h2 {
+
+    margin-bottom: 20px;
+
+}
+
+.room-card {
+
+    background: white;
+
+    border-radius: 20px;
+
+    overflow: hidden;
+
+    box-shadow:
+
+        0 12px 30px rgba(0, 0, 0, .08);
+
+    transition: .35s;
+
+    position: relative;
+
+}
+
+.room-card:hover {
+
+    transform: translateY(-8px);
+
+    box-shadow:
+
+        0 20px 40px rgba(0, 0, 0, .18);
+
+}
+
+.room-image {
+
+    height: 200px;
+
+    background: linear-gradient(135deg,
+            #0f766e,
+            #14b8a6);
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    font-size: 70px;
+
+    color: white;
+
+}
+
+.room-body {
+
+    padding: 25px;
+
+}
+
+.room-name {
+
+    font-size: 24px;
+
+    font-weight: 600;
+
+    margin-bottom: 15px;
+
+}
+
+.room-info {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    margin-bottom: 12px;
+
+    color: #6b7280;
+
+}
+
+.room-price {
+
+    font-size: 30px;
+
+    color: #0f766e;
+
+    font-weight: 700;
+
+}
+
+.room-price span {
+
+    font-size: 14px;
+
+    color: #6b7280;
+
+}
+
+.room-card button {
+
+    width: 100%;
+
+    margin-top: 20px;
+
+}
+
+/* ===========================================================
+   STATUS
+=========================================================== */
+
+.status {
+
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 8px;
+
+    padding: 8px 15px;
+
+    border-radius: 30px;
+
+    font-size: 13px;
+
+    font-weight: 600;
+
+}
+
+.available {
+
+    background: #dcfce7;
+
+    color: #166534;
+
+}
+
+.booked {
+
+    background: #fee2e2;
+
+    color: #991b1b;
+
+}
+
+/* ===========================================================
+   HISTORY
+=========================================================== */
+
+.table-card {
+
+    background: white;
+
+    border-radius: 18px;
+
+    padding: 25px;
+
+    margin-top: 35px;
+
+    box-shadow: 0 10px 25px rgba(0, 0, 0, .08);
+
+}
+
+.table-card table {
+
+    width: 100%;
+
+    border-collapse: collapse;
+
+}
+
+.table-card th {
+
+    background: #0f766e;
+
+    color: white;
+
+    padding: 15px;
+
+}
+
+.table-card td {
+
+    padding: 15px;
+
+    border-bottom: 1px solid #ececec;
+
+}
+
+.table-card tr:hover {
+
+    background: #f8fafc;
+
+}
+
+/* ===========================================================
+   SUMMARY
+=========================================================== */
+
+.summary-card {
+
+    background: #f8fafc;
+
+    border-radius: 18px;
+
+    padding: 25px;
+
+}
+
+.summary-row {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    margin-bottom: 18px;
+
+}
+
+.summary-total {
+
+    border-top: 1px solid #ddd;
+
+    margin-top: 20px;
+
+    padding-top: 20px;
+
+    font-size: 26px;
+
+    font-weight: 700;
+
+    color: #0f766e;
+
+}
+
+/* ===========================================================
+   UTILITIES
+=========================================================== */
+
+.hidden {
+
+    display: none !important;
+
+}
+
+.mt-20 {
+
+    margin-top: 20px;
+
+}
+
+.text-center {
+
+    text-align: center;
+
+}
+
+@media(max-width:768px) {
+
+    .sidebar {
+
+        display: none;
+
+    }
+
+    .content {
+
+        margin-left: 0;
+
+        padding: 20px;
+
+    }
+
+    .topbar {
+
+        flex-direction: column;
+
+        align-items: flex-start;
+
+        gap: 20px;
+
+    }
+
+    .room-grid {
+
+        grid-template-columns: 1fr;
+
+    }
+
+    .booking-body {
+
+        grid-template-columns: 1fr;
+
+    }
+
+    .summary-card {
+
+        margin-top: 20px;
+
+    }
+
+    .table-card {
+
+        overflow-x: auto;
+
+    }
+
+    table {
+
+        min-width: 750px;
+
+    }
+
+}
+
+.room-card button:disabled {
+
+    background: #cbd5e1;
+
+    color: #64748b;
+
+    cursor: not-allowed;
+
+    opacity: .8;
+
+}

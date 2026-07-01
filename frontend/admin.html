@@ -1,0 +1,720 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+
+    <title>
+
+        BookMyRoom Enterprise
+
+    </title>
+
+    <link rel="stylesheet" href="css/common.css">
+    <link rel="stylesheet" href="css/admin.css">
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+
+</head>
+
+<body>
+
+    <div class="dashboard">
+
+        <!-- =======================================
+         SIDEBAR
+    ======================================== -->
+
+        <aside class="sidebar">
+
+            <div class="logo-area">
+
+                <h2>
+
+                    🏨
+
+                    BookMyRoom
+
+                </h2>
+
+                <small>
+
+                    Enterprise
+
+                </small>
+
+            </div>
+
+            <ul>
+
+                <li class="active">
+
+                    🏠 Dashboard
+
+                </li>
+
+                <li id="bookingsMenu">
+
+                    📖 Bookings
+
+                </li>
+
+                <li id="guestsMenu">
+
+                    👥 Guests
+
+                </li>
+
+                <li id="roomsMenu">
+
+                    🏨 Rooms
+
+                </li>
+
+                <li id="calendarMenu">
+
+                    📅 Calendar
+
+                </li>
+
+                <li id="reportsMenu">
+
+                    📊 Reports
+
+                </li>
+
+                <li id="settingsMenu">
+
+                    ⚙ Settings
+
+                </li>
+
+                <li id="logoutBtn">
+
+                    🚪 Logout
+
+                </li>
+
+            </ul>
+
+        </aside>
+
+        <!-- =======================================
+         CONTENT
+         ======================================== -->
+
+        <main class="content">
+
+            <!-- TOPBAR -->
+
+            <div class="topbar">
+
+                <div>
+
+                    <h1>
+
+                        Dashboard
+
+                    </h1>
+
+                    <p id="todayDate">
+
+                        Loading...
+
+                    </p>
+
+                </div>
+
+                <div class="profile-section">
+
+                    <div>
+
+                        <strong id="adminName">
+
+                        </strong>
+
+                        <br>
+
+                        <small>
+
+                            Administrator
+
+                        </small>
+
+                    </div>
+
+                    <div id="profileCircle" class="profile-circle">
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- WELCOME -->
+
+            <div class="welcome-card">
+
+                <div>
+
+                    <h2>
+
+                        Welcome Back 👋
+
+                    </h2>
+
+                    <p>
+
+                        Monitor bookings, revenue and occupancy from one place.
+
+                    </p>
+
+                </div>
+
+            </div>
+
+            <!-- KPI -->
+
+            <div class="stats-grid">
+
+                <div class="stat-card">
+
+                    <div class="icon">
+
+                        🏨
+
+                    </div>
+
+                    <h3>
+
+                        Total Rooms
+
+                    </h3>
+
+                    <h1 id="totalRooms">
+
+                        0
+
+                    </h1>
+
+                </div>
+
+                <div class="stat-card">
+
+                    <div class="icon">
+
+                        ✅
+
+                    </div>
+
+                    <h3>
+
+                        Available
+
+                    </h3>
+
+                    <h1 id="availableRooms">
+
+                        0
+
+                    </h1>
+
+                </div>
+
+                <div class="stat-card">
+
+                    <div class="icon">
+
+                        📖
+
+                    </div>
+
+                    <h3>
+
+                        Bookings
+
+                    </h3>
+
+                    <h1 id="totalBookings">
+
+                        0
+
+                    </h1>
+
+                </div>
+
+                <div class="stat-card">
+
+                    <div class="icon">
+
+                        👥
+
+                    </div>
+
+                    <h3>
+
+                        Guests
+
+                    </h3>
+
+                    <h1 id="totalGuests">
+
+                        0
+
+                    </h1>
+
+                </div>
+
+                <div class="stat-card">
+
+                    <div class="icon">
+
+                        💰
+
+                    </div>
+
+                    <h3>
+
+                        Revenue
+
+                    </h3>
+
+                    <h1>
+
+                        ₹<span id="totalRevenue">
+
+                            0
+
+                        </span>
+
+                    </h1>
+
+                </div>
+
+                <div class="stat-card">
+
+                    <div class="icon">
+
+                        📥
+
+                    </div>
+
+                    <h3>
+
+                        Check-In Today
+
+                    </h3>
+
+                    <h1 id="todayCheckIn">
+
+                        0
+
+                    </h1>
+
+                </div>
+
+                <div class="stat-card">
+
+                    <div class="icon">
+
+                        📤
+
+                    </div>
+
+                    <h3>
+
+                        Check-Out Today
+
+                    </h3>
+
+                    <h1 id="todayCheckOut">
+
+                        0
+
+                    </h1>
+
+                </div>
+
+                <div class="stat-card">
+
+                    <div class="icon">
+
+                        🛏
+
+                    </div>
+
+                    <h3>
+
+                        Occupied
+
+                    </h3>
+
+                    <h1 id="occupiedRooms">
+
+                        0
+
+                    </h1>
+
+                </div>
+
+            </div>
+
+            <!-- Part 2 starts here -->
+
+            <!-- =======================================
+                DASHBOARD WIDGETS
+            ======================================= -->
+
+            <div class="widget-grid">
+
+                <!-- OCCUPANCY -->
+
+                <div class="widget-card">
+
+                    <div class="widget-header">
+
+                        <h2>
+
+                            🏨 Today's Occupancy
+
+                        </h2>
+
+                    </div>
+
+                    <div class="progress-item">
+
+                        <div class="progress-title">
+
+                            Ground Floor (Non-AC)
+
+                            <span id="gfPercent">
+
+                                0%
+
+                            </span>
+
+                        </div>
+
+                        <div class="progress">
+
+                            <div id="gfProgress" class="progress-fill">
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div class="progress-item">
+
+                        <div class="progress-title">
+
+                            First Floor (AC)
+
+                            <span id="ffPercent">
+
+                                0%
+
+                            </span>
+
+                        </div>
+
+                        <div class="progress">
+
+                            <div id="ffProgress" class="progress-fill">
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <!-- BOOKING DISTRIBUTION -->
+
+                <div class="widget-card">
+
+                    <div class="widget-header">
+
+                        <h2>
+
+                            📖 Booking Distribution
+
+                        </h2>
+
+                    </div>
+
+                    <div class="distribution">
+
+                        <div class="dist-row">
+
+                            <span>
+
+                                Internal
+
+                            </span>
+
+                            <strong id="internalBookings">
+
+                                0
+
+                            </strong>
+
+                        </div>
+
+                        <div class="dist-row">
+
+                            <span>
+
+                                External
+
+                            </span>
+
+                            <strong id="externalBookings">
+
+                                0
+
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- QUICK ACTIONS -->
+
+            <div class="widget-card mt-20">
+
+                <div class="widget-header">
+
+                    <h2>
+
+                        ⚡ Quick Actions
+
+                    </h2>
+
+                </div>
+
+                <div class="quick-actions">
+
+                    <button class="quick-btn" id="newBookingBtn">
+
+                        ➕ New Booking
+
+                    </button>
+
+                    <button class="quick-btn" id="guestListBtn">
+
+                        👥 Guests
+
+                    </button>
+
+                    <button class="quick-btn" id="calendarBtn">
+
+                        📅 Calendar
+
+                    </button>
+
+                    <button class="quick-btn" id="roomsBtn">
+
+                        🏨 Rooms
+
+                    </button>
+
+                    <button class="quick-btn" id="reportsBtn">
+
+                        📊 Reports
+
+                    </button>
+
+                </div>
+
+            </div>
+
+            <!-- PART 3 PLACEHOLDER -->
+
+            <!-- =====================================
+                RECENT BOOKINGS
+            ===================================== -->
+
+            <div class="table-card mt-20">
+
+                <div class="table-header">
+
+                    <h2>
+
+                        📖 Recent Bookings
+
+                    </h2>
+
+                    <button class="secondary-btn" id="viewAllBookings">
+
+                        View All
+
+                    </button>
+
+                </div>
+
+                <!-- FILTERS -->
+
+                <div class="filter-bar">
+
+                    <input id="searchGuest" type="text" placeholder="Search Guest">
+
+                    <select id="roomFilter">
+
+                        <option value="">
+
+                            All Rooms
+
+                        </option>
+
+                        <option>
+
+                            Ground Floor
+
+                        </option>
+
+                        <option>
+
+                            First Floor
+
+                        </option>
+
+                    </select>
+
+                    <select id="statusFilter">
+
+                        <option value="">
+
+                            All Status
+
+                        </option>
+
+                        <option>
+
+                            Confirmed
+
+                        </option>
+
+                        <option>
+
+                            Cancelled
+
+                        </option>
+
+                    </select>
+
+                    <input id="dateFilter" type="date">
+
+                </div>
+
+                <table id="bookingTable">
+
+                    <thead>
+
+                        <tr>
+
+                            <th>ID</th>
+
+                            <th>Room</th>
+
+                            <th>Guest</th>
+
+                            <th>Mobile</th>
+
+                            <th>Check In</th>
+
+                            <th>Check Out</th>
+
+                            <th>Type</th>
+
+                            <th>Amount</th>
+
+                            <th>Status</th>
+
+                            <th>Action</th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody id="bookingTableBody">
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+            <!-- =====================================
+     EXPORTS
+===================================== -->
+
+            <div class="widget-card mt-20">
+
+                <div class="widget-header">
+
+                    <h2>
+
+                        📊 Reports & Export
+
+                    </h2>
+
+                </div>
+
+                <div class="quick-actions">
+
+                    <button id="excelBtn" class="quick-btn">
+
+                        📗 Excel
+
+                    </button>
+
+                    <button id="pdfBtn" class="quick-btn">
+
+                        📄 PDF
+
+                    </button>
+
+                    <button id="printBtn" class="quick-btn">
+
+                        🖨 Print
+
+                    </button>
+
+                    <button id="historyBtn" class="quick-btn">
+
+                        📜 History
+
+                    </button>
+
+                    <button id="refreshBtn" class="quick-btn">
+
+                        🔄 Refresh
+
+                    </button>
+
+                </div>
+
+            </div>
+
+        </main>
+
+    </div>
+
+    <script src="js/config.js"></script>
+
+    <script src="js/admin.js"></script>
+
+</body>
+
+</html>

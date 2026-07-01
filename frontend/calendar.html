@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>
+
+        BookMyRoom Enterprise | Occupancy Calendar
+
+    </title>
+
+    <link rel="stylesheet" href="css/common.css">
+
+    <link rel="stylesheet" href="css/calendar.css">
+
+</head>
+
+<body>
+
+    <div class="calendar-page">
+
+        <!-- ==========================================
+         SIDEBAR
+    =========================================== -->
+
+        <aside class="sidebar">
+
+            <div class="sidebar-logo">
+
+                🏨
+
+                <h2>
+
+                    BookMyRoom
+
+                </h2>
+
+            </div>
+
+            <ul class="sidebar-menu">
+
+                <li>
+
+                    <a href="admin.html">
+
+                        📊 Dashboard
+
+                    </a>
+
+                </li>
+
+                <li class="active">
+
+                    <a href="#">
+
+                        📅 Occupancy Calendar
+
+                    </a>
+
+                </li>
+
+                <li>
+
+                    <a href="admin.html">
+
+                        📖 Booking History
+
+                    </a>
+
+                </li>
+
+            </ul>
+
+        </aside>
+
+        <!-- ==========================================
+         MAIN CONTENT
+    =========================================== -->
+
+        <main class="calendar-content">
+
+            <!-- Header -->
+
+            <div class="page-header">
+
+                <div>
+
+                    <h1>
+
+                        Occupancy Calendar
+
+                    </h1>
+
+                    <p>
+
+                        View room occupancy and booking schedule
+
+                    </p>
+
+                </div>
+
+                <div class="header-actions">
+
+                    <button id="backDashboardBtn" class="secondary-btn">
+
+                        ← Dashboard
+
+                    </button>
+
+                    <button id="refreshCalendarBtn" class="primary-btn">
+
+                        Refresh
+
+                    </button>
+
+                </div>
+
+            </div>
+
+            <!-- KPI Cards -->
+
+            <div class="calendar-kpis">
+
+                <div class="kpi-card">
+
+                    <h3>
+
+                        Total Rooms
+
+                    </h3>
+
+                    <span id="calendarTotalRooms">
+
+                        0
+
+                    </span>
+
+                </div>
+
+                <div class="kpi-card">
+
+                    <h3>
+
+                        Available
+
+                    </h3>
+
+                    <span id="calendarAvailableRooms">
+
+                        0
+
+                    </span>
+
+                </div>
+
+                <div class="kpi-card">
+
+                    <h3>
+
+                        Occupied
+
+                    </h3>
+
+                    <span id="calendarOccupiedRooms">
+
+                        0
+
+                    </span>
+
+                </div>
+
+                <div class="kpi-card">
+
+                    <h3>
+
+                        Occupancy
+
+                    </h3>
+
+                    <span id="calendarOccupancy">
+
+                        0%
+
+                    </span>
+
+                </div>
+
+            </div>
+
+            <!-- Filters -->
+
+            <div class="calendar-filters">
+
+                <select id="monthFilter">
+
+                    <option value="">
+
+                        Select Month
+
+                    </option>
+
+                </select>
+
+                <select id="floorFilter">
+
+                    <option value="">
+
+                        All Floors
+
+                    </option>
+
+                    <option value="Ground Floor">
+
+                        Ground Floor
+
+                    </option>
+
+                    <option value="First Floor">
+
+                        First Floor
+
+                    </option>
+
+                </select>
+
+                <select id="roomTypeFilter">
+
+                    <option value="">
+
+                        All Rooms
+
+                    </option>
+
+                    <option value="AC">
+
+                        AC
+
+                    </option>
+
+                    <option value="Non AC">
+
+                        Non AC
+
+                    </option>
+
+                </select>
+
+                <input id="guestSearch" type="text" placeholder="Search Guest...">
+
+            </div>
+
+            <!-- Calendar -->
+
+            <div class="calendar-card">
+
+                <div class="calendar-toolbar">
+
+                    <button id="previousMonth">
+
+                        ◀
+
+                    </button>
+
+                    <h2 id="calendarTitle">
+
+                        July 2026
+
+                    </h2>
+
+                    <button id="nextMonth">
+
+                        ▶
+
+                    </button>
+
+                </div>
+
+                <div id="calendarGrid">
+
+                    <!-- calendar.js -->
+
+                </div>
+
+            </div>
+
+            <!-- Daily Occupancy -->
+
+            <div class="occupancy-table-card">
+
+                <div class="card-header">
+
+                    <h2>
+
+                        Daily Occupancy
+
+                    </h2>
+
+                </div>
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+
+                            <th>
+
+                                Room
+
+                            </th>
+
+                            <th>
+
+                                Floor
+
+                            </th>
+
+                            <th>
+
+                                Guest
+
+                            </th>
+
+                            <th>
+
+                                Check-In
+
+                            </th>
+
+                            <th>
+
+                                Check-Out
+
+                            </th>
+
+                            <th>
+
+                                Status
+
+                            </th>
+
+                            <th>
+
+                                Action
+
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody id="occupancyTableBody">
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </main>
+
+    </div>
+
+    <script src="js/config.js"></script>
+
+    <script src="js/calendar.js"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>BookMyRoom Pro</title>
+
+    <link rel="stylesheet" href="css/common.css">
+
+    <link rel="stylesheet" href="css/login.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+
+</head>
+
+<body>
+
+    <div class="login-page">
+
+        <!-- LEFT PANEL -->
+
+        <div class="login-left">
+
+            <div class="brand">
+
+                <div class="brand-icon">
+
+                    🏨
+
+                </div>
+
+                <h1>
+
+                    BookMyRoom
+
+                </h1>
+
+                <p>
+
+                    Smart Corporate Room Booking System
+
+                </p>
+
+            </div>
+
+            <div class="feature-list">
+
+                <div class="feature">
+
+                    ✔ Instant Room Booking
+
+                </div>
+
+                <div class="feature">
+
+                    ✔ Live Occupancy Calendar
+
+                </div>
+
+                <div class="feature">
+
+                    ✔ Guest Registration
+
+                </div>
+
+                <div class="feature">
+
+                    ✔ Admin Dashboard
+
+                </div>
+
+                <div class="feature">
+
+                    ✔ Secure ID Verification
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- RIGHT PANEL -->
+
+        <div class="login-right">
+
+            <div class="login-card">
+
+                <h2>
+
+                    Welcome Back
+
+                </h2>
+
+                <p>
+
+                    Login to continue
+
+                </p>
+
+                <!-- Tabs -->
+
+                <div class="tabs">
+
+                    <button id="adminTab" class="tab active">
+
+                        Admin
+
+                    </button>
+
+                    <button id="guestTab" class="tab">
+
+                        Guest
+
+                    </button>
+
+                </div>
+
+                <!-- ADMIN LOGIN -->
+
+                <div id="adminLogin" class="tab-content">
+
+                    <div class="form-group">
+
+                        <label>
+
+                            Username
+
+                        </label>
+
+                        <input id="adminUsername" type="text" placeholder="Enter Username">
+
+                    </div>
+
+                    <div class="form-group">
+
+                        <label>
+
+                            Password
+
+                        </label>
+
+                        <input id="adminPassword" type="password" placeholder="Enter Password">
+
+                    </div>
+
+                    <button id="adminLoginBtn" class="primary-btn">
+
+                        Login
+
+                    </button>
+
+                </div>
+
+                <!-- GUEST -->
+
+                <div id="guestLogin" class="tab-content hidden">
+
+                    <div class="guest-buttons">
+
+                        <button id="showGuestLogin" class="secondary-btn">
+
+                            Login
+
+                        </button>
+
+                        <button id="showGuestRegister" class="secondary-btn">
+
+                            Register
+
+                        </button>
+
+                    </div>
+
+                    <!-- Guest Login -->
+
+                    <div id="guestLoginForm">
+
+                        <div class="form-group">
+
+                            <label>
+
+                                Mobile Number
+
+                            </label>
+
+                            <input id="guestMobile" type="tel" placeholder="9876543210">
+
+                        </div>
+
+                        <div class="form-group">
+
+                            <label>
+
+                                Password
+
+                            </label>
+
+                            <input id="guestPassword" type="password" placeholder="Password">
+
+                        </div>
+
+                        <button id="guestLoginBtn" class="primary-btn">
+
+                            Login
+
+                        </button>
+
+                    </div>
+
+                    <!-- Guest Register -->
+
+                    <div id="guestRegisterForm" class="hidden">
+
+                        <div class="form-group">
+
+                            <label>
+
+                                Full Name
+
+                            </label>
+
+                            <input id="guestName" type="text" placeholder="Enter Full Name">
+
+                        </div>
+
+                        <div class="form-group">
+
+                            <label>
+
+                                Mobile Number
+
+                            </label>
+
+                            <input id="guestRegisterMobile" type="tel" placeholder="9876543210">
+
+                        </div>
+
+                        <div class="form-group">
+
+                            <label>
+
+                                Password
+
+                            </label>
+
+                            <input id="guestRegisterPassword" type="password" placeholder="Create Password">
+
+                        </div>
+
+                        <button id="guestRegisterBtn" class="primary-btn">
+
+                            Register & Continue
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <script src="js/config.js"></script>
+    <script src="js/auth.js"></script>
+
+</body>
+
+</html>
